@@ -81,10 +81,10 @@ it('should update the companiey by id', function(done) {
 
 
 it('should delete the company by id', function(done) {
+      
       chai
         .request(app)
         .delete('/companies/'+compid)
-        .send(updated_company)
          .end((err, res) => {
           expect('Content-Type', /json/)
           expect(res.body.message).to.equals('Company successfully deleted')

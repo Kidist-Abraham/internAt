@@ -82,10 +82,10 @@ it('should delete the intern by id', function(done) {
       chai
         .request(app)
         .delete('/interns/'+inteid)
-        .send(updated_intern)
          .end((err, res) => {
           expect('Content-Type', /json/)
           expect(res.body.message).to.equals('Intern successfully deleted')
+         console.log(inteid)
          done()
 });
     });
