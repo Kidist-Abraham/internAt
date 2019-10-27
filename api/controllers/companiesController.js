@@ -17,6 +17,7 @@ exports.list_all_companies = function(req, res) {
 
 exports.create_company = function(req, res) {
   var new_company = new Company(req.body);
+  console.log(new_company.description)
   new_company.save(function(err, company) {
     if (err)
       res.send(err);

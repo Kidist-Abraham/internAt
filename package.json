@@ -3,13 +3,19 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "apidoc": {
+    "title": "InterAt Api Documentation"
+    
+  },
   "scripts": {
     "test": "mocha --exit",
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "create-doc": "apidoc -i ./api/routes/ -o ./apidocs"
   },
   "author": "Kidist",
   "license": "ISC",
   "devDependencies": {
+    "apidoc": "^0.17.6",
     "bcrypt": "^3.0.6",
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",

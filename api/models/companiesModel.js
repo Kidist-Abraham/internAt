@@ -9,8 +9,10 @@ var CompanySchema = new Schema({
   city:String,
   catagory:String,
   field:String,
-  discription:String
-  
+  description:String,
 });
 
 module.exports = mongoose.model('Company', CompanySchema);
+
+
+

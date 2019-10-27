@@ -132,7 +132,7 @@ exports.getUser = function getUser(req, res, next) {
     console.log(req.params.userId)
       if (err) {
         return res.status(401).json({
-          message: 'Auth Failed'
+          message: 'Request Failed'
         });
       }
  
