@@ -11,7 +11,7 @@ exports.list_all_interns = function(req, res) {
    return  res.send({success:false,
                     err:err}); }
    return  res.json({success:true,
-            intern:intern});
+            interns:intern});
   });
 };
 

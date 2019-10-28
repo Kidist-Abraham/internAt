@@ -10,7 +10,7 @@ exports.list_all_companies = function(req, res) {
    return  res.send({success:false,
                     err:err}); }
    return  res.json({success:true,
-            company:company});
+            companies:company});
   });
 };
 

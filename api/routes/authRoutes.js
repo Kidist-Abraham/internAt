@@ -67,13 +67,24 @@ module.exports = function(app) {
  *
  * @apiSuccess {String} message  Message confirming success of Authentication.
  * @apiSuccess {String} token The JWT token for the logged in user.
+   @apiSuccess {Boolean} success The success status of the request
+   @apiSuccess {Object} user The user who just logged in
  *
  * @apiSuccessExample {json} Success-Response:
  * 	 HTTP/1.1 201 Created
  * 	 {
- * 		 success: true,
- *  	 token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJ1c2VySWQiOiI1YmQ2ZjRjZTFlMWZmOTUwNzg2Y2Y4MmEiLCJpYXQiOjE1NDA4MTc1MzcsImV4cCI6MTU0MDgyMTEzN30"
- * 	 }
+    "success": true,
+    "message": "Auth successful",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImtpZGlzdC5hYnJhaGFtQGlvaGsuaW9rIiwidXNlcklkIjoiNWRiNjUzYmRiZWRkZTA1MmFmOGI5MTRmIiwiaWF0IjoxNTcyMjMwMjM5LCJleHAiOjE1NzIyMzAyOTl9.uLz2OoyRh7rqX7tpr_kgDD-eRMGGjnT2RON3dgFbgs4",
+    "user": {
+        "role": "Intern",
+        "_id": "5db653bdbedde052af8b9151",
+        "name": "Jhon",
+        "email": "john.doe@example.com",
+        "LC": "none",
+        "__v": 0
+    }
+}
  *
  */
 
@@ -88,7 +99,9 @@ module.exports = function(app) {
  *
  * @apiParam {String} Id The email of the User.
  *
- * @apiSuccess {String} _id  The ID of the newly created User.
+   @apiSuccess {String} name  The name of the User.
+   @apiSuccess {String} LC  The license of the User.
+ * @apiSuccess {String} _id  The ID of the User.
  * @apiSuccess {String} email The email of the User.
  * @apiSuccess {String} password The hashed password of the User.
  * @apiSuccess {String} role The role of the User. 
@@ -97,15 +110,17 @@ module.exports = function(app) {
  *
  * @apiSuccessExample {json} Success-Response:
  * 	 HTTP/1.1 201 Created
- * 	{
- *   "role": "intern",
- *   "date_created": "2019-10-23T17:54:34.858Z",
- *   "date_modified": "2019-10-23T17:54:34.858Z",
- *   "_id": "5db093dabbe68636db4af54c",
- *   "email": "cb@dd",
- *   "password": "$2b$10$s4yvt4V0h0M8NbBe5UJjsOYMUFPK1NK3GmC4m/81FwA.6z2aZGX5u",
- *   "__v": 0
- *   }
+ * {
+    "date_created": "2019-10-28T02:34:37.657Z",
+    "date_modified": "2019-10-28T02:34:37.657Z",
+    "LC": "none",
+    "_id": "5db653bdbedde052af8b914f",
+    "email": "kidist.abraham@iohk.iok",
+    "password": "$2b$10$mQ2tJ9AljyjV/PWavOP.bet.3sReXAIAOc3bzItioZlitmI1qo/WG",
+    "role": "Company",
+    "name": "Mimi",
+    "__v": 0
+}
  *
  */
   app.route('/user/:userId')
