@@ -21,7 +21,7 @@ const config = require('../config');
 
 const Company = require("../models/companiesModel");
 const Intern = require("../models/internsModel");
-
+const TobeApproved = require("../models/approvalModel");
 
 /*
 * Create User
@@ -111,6 +111,14 @@ var mailOptions = {
     console.log('Email sent: ' + info.response);
   }
 }); */
+
+TobeApproved.remove({
+    email: user.email
+  }, function(err, tobeApproved) {
+    if (err)
+       console.log(err)
+  console.log('TobeApproved successfully deleted') 
+  });
     res.status(201);
     res.json(user);
   });
