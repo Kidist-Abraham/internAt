@@ -2,6 +2,16 @@
 const events = require('events');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
+
+
+var transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'kidistabraham@gmail.com',
+    pass: ''
+  }
+});
 
 // Get User DAL
 const UserDal = require('../dal/authdal');
@@ -86,6 +96,21 @@ else{
       return (err);
   });
 }
+
+var mailOptions = {
+  from: 'kidistabraham@gmail.com',
+  to: user.email,
+  subject: 'Your InternAt Account is created successfully. ',
+  text: 'Dear '+user.name +', Welcome to InternAt, Your account has been approved. You can know start editing your profile by following the link below '
+};
+
+/*transporter.sendMail(mailOptions, function(error, info){
+  if (error) {
+    console.log(error);
+  } else {
+    console.log('Email sent: ' + info.response);
+  }
+}); */
     res.status(201);
     res.json(user);
   });

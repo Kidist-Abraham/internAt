@@ -5,7 +5,6 @@
   "main": "index.js",
   "apidoc": {
     "title": "InterAt Api Documentation"
-    
   },
   "scripts": {
     "test": "mocha --exit",
@@ -27,6 +26,7 @@
   },
   "dependencies": {
     "express": "^4.17.1",
-    "mongoose": "^5.7.4"
+    "mongoose": "^5.7.4",
+    "nodemailer": "^6.3.1"
   }
 }
