@@ -6,6 +6,7 @@ var express = require('express'),
   Intern = require('./api/models/internsModel'), 
   Company = require('./api/models/companiesModel'),
   User= require('./api/models/authModel'), 
+  TobeApproved= require('./api/models/approvalModel'),
   validator = require('express-validator');
  
   bodyParser = require('body-parser');
@@ -22,6 +23,7 @@ app.use(validator());
 require('./api/routes/internRoutes')(app); 
 require('./api/routes/companyRoutes')(app);
 require('./api/routes/authRoutes')(app);
+require('./api/routes/approvalRoutes')(app);
 
 app.listen(port);
 

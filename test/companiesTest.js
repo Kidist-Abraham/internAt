@@ -15,7 +15,9 @@ var new_company ={
   city: "Test City",
   catagory: "Test Catagory",
   field:"Test field",
-  discription:"Test Discription"
+  discription:"Test Discription",
+  LC:"LC",
+  role: "Company"
 }
 
 var updated_company ={
@@ -24,7 +26,9 @@ var updated_company ={
   city: "Test City",
   catagory: "Test Catagory",
   field:"Test field",
-  discription:"Test Discription"
+  discription:"Test Discription",
+  LC:"Test LC",
+  role: "Company"
 }
 describe('Unit testing the /companies route', function() {
 
@@ -38,8 +42,8 @@ describe('Unit testing the /companies route', function() {
         expect(res).to.have.status(200);
         //expect(res.body.status).to.equals("success");
         //console.log(res.body)
-        expect(res.body).to.have.property('name',"Test Name",'email',"Test@email",'city',"Test City",'catagory',"Test Catagory",'field',"Test field",'discription',"Test Discription");
-        compid=res.body._id
+        expect(res.body.company).to.have.property('name',"Test Name",'email',"Test@email",'city',"Test City",'catagory',"Test Catagory",'field',"Test field",'discription',"Test Discription",'LC',"Test LC",'role', "Company");
+        compid=res.body.company._id
          done();
 });
      
@@ -55,25 +59,26 @@ describe('Unit testing the /companies route', function() {
 });
     });
 
-it('should get the companiey by id', function(done) {
+it('should get the company by id', function(done) {
+     console.log(compid)
       chai
         .request(app)
         .get('/companies/'+compid)
          .end((err, res) => {
           expect('Content-Type', /json/)
-          expect(res.body).to.have.property('_id',compid,'name',"Test Name",'email',"Test@email",'city',"Test City",'catagory',"Test Catagory",'field',"Test field",'discription',"Test Discription");
+          expect(res.body.company).to.have.property('_id',compid,'name',"Test Name",'email',"Test@email",'city',"Test City",'catagory',"Test Catagory",'field',"Test field",'discription',"Test Discription",'LC',"Test LC",'role', "Company");
          done()
 });
     });
 
-it('should update the companiey by id', function(done) {
+it('should update the company by id', function(done) {
       chai
         .request(app)
         .put('/companies/'+compid)
         .send(updated_company)
          .end((err, res) => {
           expect('Content-Type', /json/)
-          expect(res.body).to.have.property('_id',compid,'name',  "updated Name",'email',"Test@email",'city',"Test City",'catagory',"Test Catagory",'field',"Test field",'discription',"Test Discription");
+          expect(res.body.company).to.have.property('_id',compid,'name',  "updated Name",'email',"Test@email",'city',"Test City",'catagory',"Test Catagory",'field',"Test field",'discription',"Test Discription",'LC',"Test LC",'role', "Company");
          done()
 });
     });

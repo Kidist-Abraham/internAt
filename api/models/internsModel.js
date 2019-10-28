@@ -5,10 +5,11 @@ var Schema = mongoose.Schema;
 
 var InternSchema = new Schema({
   name:  String,
-  email:String,
+  email:{type: String, required: true, unique: true},
   field:String,
   interests:[String],
-  discription:String  
+  discription:String,
+  role: {type: String, required: true,  default: "Intern"} 
   
 });
 

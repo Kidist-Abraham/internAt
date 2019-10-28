@@ -14,7 +14,8 @@ var new_intern ={
   email: "Test@email",
   field:"Test field",
   interests: ["Test interests"],
-  discription:"Test Discription"
+  discription:"Test Discription",
+  role:"Intern"
 }
 
 var updated_intern ={
@@ -22,7 +23,8 @@ var updated_intern ={
   email: "Test@email",
   field:"Test field",
   interests: ["Test interests"],
-  discription:"Test Discription"
+  discription:"Test Discription",
+  role:"Intern"
 }
 describe('Unit testing the /interns route', function() {
 
@@ -36,8 +38,8 @@ describe('Unit testing the /interns route', function() {
         expect(res).to.have.status(200);
         //expect(res.body.status).to.equals("success");
    //     console.log(res.body)
-        expect(res.body).to.have.property('name',"Test Name",'email',"Test@email",'field',"Test field",'interests',["Test interests"],'discription',"Test Discription");
-        inteid=res.body._id
+        expect(res.body.intern).to.have.property('name',"Test Name",'email',"Test@email",'field',"Test field",'interests',["Test interests"],'discription',"Test Discription",'role',"Intern");
+        inteid=res.body.intern._id
          done();
 });
      
@@ -59,7 +61,7 @@ it('should get the intern by id', function(done) {
         .get('/interns/'+inteid)
          .end((err, res) => {
           expect('Content-Type', /json/)
-          expect(res.body).to.have.property('_id',inteid,'name',"Test Name",'email',"Test@email",'field',"Test field",'interests',["Test interests"],'discription',"Test Discription");
+          expect(res.body.intern).to.have.property('_id',inteid,'name',"Test Name",'email',"Test@email",'field',"Test field",'interests',["Test interests"],'discription',"Test Discription",'role',"Intern");
          done()
 });
     });
@@ -71,7 +73,7 @@ it('should update the intern by id', function(done) {
         .send(updated_intern)
          .end((err, res) => {
           expect('Content-Type', /json/)
-          expect(res.body).to.have.property('_id',inteid,'name',"updated Name",'email',"Test@email",'field',"Test field",'interests',["Test interests"],'discription',"Test Discription");
+          expect(res.body.intern).to.have.property('_id',inteid,'name',"updated Name",'email',"Test@email",'field',"Test field",'interests',["Test interests"],'discription',"Test Discription",'role',"Intern");
          done()
 });
     });

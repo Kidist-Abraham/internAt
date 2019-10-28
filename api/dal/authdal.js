@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 // Get User model
 const User = require("../models/authModel");
 
+
 /**
  * create a new user.
  *
@@ -14,6 +15,8 @@ const User = require("../models/authModel");
  */
 exports.create = function create(userData, cb) {
   console.log("creating a new User");
+
+
 
   // Hash Password
   bcrypt.hash(userData.password, 10, (err, hash) => {
@@ -42,6 +45,8 @@ exports.create = function create(userData, cb) {
           cb(null, user);
         });
       });
+
+
     }
   });
 };

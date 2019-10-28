@@ -9,6 +9,10 @@ const UserDal = require('../dal/authdal');
 // Get Config file
 const config = require('../config');
 
+const Company = require("../models/companiesModel");
+const Intern = require("../models/internsModel");
+
+
 /*
 * Create User
 *
@@ -56,6 +60,32 @@ exports.createUser = function createUser(req, res, next) {
   });
 
   workflow.on('respond', function respond(user) {
+  let intern = {
+                name:user.name,
+                email:user.email,
+                role:"Intern"
+                                } ,
+      company = {
+                name:user.name,
+                email:user.email,
+                LC:user.LC,
+                role:"Company" 
+                              };
+let internModel= new Intern(intern);
+  let  companyModel= new Company(company);
+  if(user.role==="Company"){
+ companyModel.save(function(err, company) {
+    if (err)
+      return (err);
+  });
+}
+else{
+
+ internModel.save(function(err, intern) {
+    if (err)
+      return (err);
+  });
+}
     res.status(201);
     res.json(user);
   });
@@ -77,7 +107,8 @@ exports.loginUser = function loginUser(req, res, next) {
     UserDal.get({ email: req.body.email }, function(err, user) {
       if (err) {
         return res.status(401).json({
-          message: 'Auth Failed'
+          success: false,
+          message: 'Auth Failed1'
         });
       }
 
@@ -86,20 +117,25 @@ exports.loginUser = function loginUser(req, res, next) {
   });
 
   workflow.on('checkPassword', function checkPassword(user) {
-    bcrypt.compare(req.body.password, user.password, (err, result) => {
-      if(err) {
+     bcrypt.compare(req.body.password, user.password, (err, result) => {
+      console.log(err)
+      console.log(result)
+        if(err) {
+        console.log(err)
         return res.status(401).json({
-          message: 'Auth Failed'
+          success: false,
+          message: 'Auth Failed2'
         });
       }
 
       if(result) {
         workflow.emit('respond', user);
       }
-
-      return res.status(401).json({
-        message: 'Auth Failed'
-      });
+ /*  return res.status(401).json({
+          success: false,
+          message: 'Auth Failed3'
+        }); */
+     
     });
   });
 
@@ -114,11 +150,35 @@ exports.loginUser = function loginUser(req, res, next) {
         expiresIn: "1m"
       }
     );
-    res.status(200);
-    res.json({
-      message: 'Auth Successful',
-      token: token
+  //  res.status(200);
+if (user.role==="Company"){
+Company.findOne({email:user.email}, function(err, company) {
+  console.log("I am HEREEEEEEE")
+return res.status(200).json({
+      success: true,
+      message: 'Auth successful',
+      token: token,
+      user:company
     });
+    
+ });
+}
+
+
+else {
+Intern.findOne({email:user.email}, function(err, intern) {
+ if(err){
+    return res.send(err)
+}
+ return res.status(200).json({
+      success: true,
+      message: 'Auth successful',
+      token: token,
+      user:intern
+    });
+
+ });
+}
   });
 
   workflow.emit('checkUser');
@@ -129,9 +189,10 @@ exports.loginUser = function loginUser(req, res, next) {
 exports.getUser = function getUser(req, res, next) {
 
   UserDal.get({email: req.params.userId}, function(err, user) {
-    console.log(req.params.userId)
+   // console.log(req.params.userId)
       if (err) {
         return res.status(401).json({
+          success: false,
           message: 'Request Failed'
         });
       }
