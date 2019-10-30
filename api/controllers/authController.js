@@ -10,7 +10,7 @@
 	  service: 'gmail',
 	  auth: {
 	    user: 'kidistabraham@gmail.com',
-	    pass: 'japanisjapanis2'
+	    pass: ''
 	  }
 	});
 
@@ -86,13 +86,13 @@
 	  text: 'Dear '+user.name +', Welcome to InternAt, Your account has been approved. You can know start editing your profile by following the link below '
 	};
 
-	transporter.sendMail(mailOptions, function(error, info){
+	/*transporter.sendMail(mailOptions, function(error, info){
 	  if (error) {
 	    console.log(error);
 	  } else {
 	    console.log('Email sent: ' + info.response);
 	  }
-	}); 
+	}); */ 
 
 	TobeApproved.remove({email: user.username}, function(err, tobeApproved) {
 	    if (err)
