@@ -20,7 +20,7 @@ define({ "api": [
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "email",
+            "field": "username",
             "description": "<p>The email of the User.</p>"
           },
           {
@@ -49,7 +49,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Request-Example:",
-          "content": "\t {\n                \"name\": \"John\"   \n\t\t\"email\": \"john.doe@example.com\",\n\t\t\"password\": \"plain-text-password\",\n                \"role\": \"Company\"\n                \"LC\":\"MIT\"\n\t }",
+          "content": "\t {\n                \"name\": \"Kidist\"   \n\t\t\"username\": \"kidist.abraham@intern.io\",\n\t\t\"password\": \"password\",\n                \"role\": \"Company\"\n                \"LC\":\"dassd\"\n\t }",
           "type": "json"
         }
       ]
@@ -75,15 +75,8 @@ define({ "api": [
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "email",
+            "field": "username",
             "description": "<p>The email of the User.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "password",
-            "description": "<p>The hashed password of the User.</p>"
           },
           {
             "group": "Success 200",
@@ -112,105 +105,27 @@ define({ "api": [
             "optional": false,
             "field": "LC",
             "description": "<p>The license of the User. (For companies)</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "\t HTTP/1.1 201 Created\n\t {        \n\t\t_id: '58a1ea8b36dfb71d975384af',\n               \"name\": \"John\" , \n             \"role\": \"Company\",\n\t\temail: \"john.doe@example.com\",\n            \tpassword: \"$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy\",\n\t\tdate_created: 2017-02-13T17:19:08.404Z,\n\t\tdate_modified: 2017-02-13T17:19:08.404Z,\n                \"LC\":\"MIT\"\n\t }",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "api/routes/authRoutes.js",
-    "groupTitle": "Auth"
-  },
-  {
-    "type": "get",
-    "url": "/user/:userId",
-    "title": "Get User",
-    "name": "GetUser",
-    "group": "Auth",
-    "version": "0.0.1",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "Id",
-            "description": "<p>The email of the User.</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "name",
-            "description": "<p>The name of the User.</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "LC",
-            "description": "<p>The license of the User.</p>"
+            "field": "salt",
+            "description": "<p>The randomization hash</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "_id",
-            "description": "<p>The ID of the User.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "email",
-            "description": "<p>The email of the User.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "password",
+            "field": "hash",
             "description": "<p>The hashed password of the User.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "role",
-            "description": "<p>The role of the User.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Date",
-            "optional": false,
-            "field": "date_created",
-            "description": "<p>The date on which the User entry was created.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Date",
-            "optional": false,
-            "field": "date_modified",
-            "description": "<p>The date on which the User entry was last updated.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "\t HTTP/1.1 201 Created\n{\n    \"date_created\": \"2019-10-28T02:34:37.657Z\",\n    \"date_modified\": \"2019-10-28T02:34:37.657Z\",\n    \"LC\": \"none\",\n    \"_id\": \"5db653bdbedde052af8b914f\",\n    \"email\": \"kidist.abraham@iohk.iok\",\n    \"password\": \"$2b$10$mQ2tJ9AljyjV/PWavOP.bet.3sReXAIAOc3bzItioZlitmI1qo/WG\",\n    \"role\": \"Company\",\n    \"name\": \"Mimi\",\n    \"__v\": 0\n}",
+          "content": "\t{\n    \"success\": true,\n    \"user\": {\n        \"date_created\": \"2019-10-30T03:31:42.797Z\",\n        \"date_modified\": \"2019-10-30T03:31:42.797Z\",\n        \"LC\": \"dassd\",\n        \"_id\": \"5db9041ecff7001fb7b1c5f2\",\n        \"username\": \"kidist.abraham@internat.io\",\n        \"role\": \"Company\",\n        \"name\": \"Kidist\",\n        \"salt\": \"a739f55140e16a13adc0d6c7c5fc83e6152637ebe396b0b7c1372351332f84cc\",\n        \"hash\": \"dd4b700d175d334d4c0527a882a3530e5c648e9c6fa46606a4838241c77893b0e640ee7db9f68d492936fd3f90f7f3ffb61087fe6580663c92f38fda290a83b418fcce98c6ff5d2c7590e350f611e7472eef04579131aee1822a723ddd53f8aec2f63e66b1730f8b9800704f9025e75ea1deffca43f13f5c99addbb23c0bef625e8823d1dba610fcf7c5b1332123e7370ad74130ca79a8c9215745e0b39396b26f3c8025e8cb5a1f5757dd3fa56fa55f8d64dba652230407a489f411bacce1f8c8fe5eb04835e438f752e4ddfc52ef3160c1a9a7d30611c1dfd06be38b80b12a730afbde906b4dc8e832258953ebd469785f2167ec6d57ecfc5a6d93ea8983b6ab7d863a2f18192078176ac700276c475dbbbf2f1a00af723827054ef8ba736fbf9aaeb8ec3c68add3485ae1983de25ab5ea77e64b86ed9c9c383bf9faf0d708ea6ac871a5b81e366d2cec5a8ad426b5f821c8a3d86e7e6462cc5fe22081ab42bef6f868f78bbe549d85b2d8ba03ad76a1fb3d878c9d6921f10b43afe5e26a93c84f838fd29cb41f0ca329cc4e6fa3233a5d7bc2022af9475b0aeaddfce4eec175ac0d3f286e2be56c31f9ed8ede83130dcad2c9fb00bed6f9eb637380a373e9a4f5a3a485bacb597e2b6125b0fa2c041706c157f14081358f57bfe5cae7047c446b7cf6aa2a67f50603d1a1b6a84910f99773f1d1414f04dec0b44bbe056db9\",\n        \"__v\": 0\n    }\n}",
           "type": "json"
         }
       ]
@@ -232,7 +147,7 @@ define({ "api": [
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "email",
+            "field": "username",
             "description": "<p>The email of the User.</p>"
           },
           {
@@ -247,7 +162,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Request-Example:",
-          "content": " {\n\t\"email\": \"john.doe@example.com\",\n\t\"password\": \"plain-text-password\",\n }",
+          "content": " {\n\t\"username\": \"kidist.abraham@intern.io\",\n\t\"password\": \"password\",\n }",
           "type": "json"
         }
       ]
@@ -255,20 +170,6 @@ define({ "api": [
     "success": {
       "fields": {
         "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "message",
-            "description": "<p>Message confirming success of Authentication.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "token",
-            "description": "<p>The JWT token for the logged in user.</p>"
-          },
           {
             "group": "Success 200",
             "type": "Boolean",
@@ -288,7 +189,37 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "\t HTTP/1.1 201 Created\n\t {\n    \"success\": true,\n    \"message\": \"Auth successful\",\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImtpZGlzdC5hYnJhaGFtQGlvaGsuaW9rIiwidXNlcklkIjoiNWRiNjUzYmRiZWRkZTA1MmFmOGI5MTRmIiwiaWF0IjoxNTcyMjMwMjM5LCJleHAiOjE1NzIyMzAyOTl9.uLz2OoyRh7rqX7tpr_kgDD-eRMGGjnT2RON3dgFbgs4\",\n    \"user\": {\n        \"role\": \"Intern\",\n        \"_id\": \"5db653bdbedde052af8b9151\",\n        \"name\": \"Jhon\",\n        \"email\": \"john.doe@example.com\",\n        \"LC\": \"none\",\n        \"__v\": 0\n    }\n}",
+          "content": "\n\n{\n    \"success\": true,\n    \"user\": {\n        \"date_created\": \"2019-10-30T03:31:42.797Z\",\n        \"date_modified\": \"2019-10-30T03:31:42.797Z\",\n        \"LC\": \"dassd\",\n        \"_id\": \"5db9041ecff7001fb7b1c5f2\",\n        \"username\": \"kidist.abraham@internat.io\",\n        \"role\": \"Company\",\n        \"name\": \"Kidist\",\n        \"salt\": \"a739f55140e16a13adc0d6c7c5fc83e6152637ebe396b0b7c1372351332f84cc\",\n        \"hash\": \"dd4b700d175d334d4c0527a882a3530e5c648e9c6fa46606a4838241c77893b0e640ee7db9f68d492936fd3f90f7f3ffb61087fe6580663c92f38fda290a83b418fcce98c6ff5d2c7590e350f611e7472eef04579131aee1822a723ddd53f8aec2f63e66b1730f8b9800704f9025e75ea1deffca43f13f5c99addbb23c0bef625e8823d1dba610fcf7c5b1332123e7370ad74130ca79a8c9215745e0b39396b26f3c8025e8cb5a1f5757dd3fa56fa55f8d64dba652230407a489f411bacce1f8c8fe5eb04835e438f752e4ddfc52ef3160c1a9a7d30611c1dfd06be38b80b12a730afbde906b4dc8e832258953ebd469785f2167ec6d57ecfc5a6d93ea8983b6ab7d863a2f18192078176ac700276c475dbbbf2f1a00af723827054ef8ba736fbf9aaeb8ec3c68add3485ae1983de25ab5ea77e64b86ed9c9c383bf9faf0d708ea6ac871a5b81e366d2cec5a8ad426b5f821c8a3d86e7e6462cc5fe22081ab42bef6f868f78bbe549d85b2d8ba03ad76a1fb3d878c9d6921f10b43afe5e26a93c84f838fd29cb41f0ca329cc4e6fa3233a5d7bc2022af9475b0aeaddfce4eec175ac0d3f286e2be56c31f9ed8ede83130dcad2c9fb00bed6f9eb637380a373e9a4f5a3a485bacb597e2b6125b0fa2c041706c157f14081358f57bfe5cae7047c446b7cf6aa2a67f50603d1a1b6a84910f99773f1d1414f04dec0b44bbe056db9\",\n        \"__v\": 0\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "api/routes/authRoutes.js",
+    "groupTitle": "Auth"
+  },
+  {
+    "type": "post",
+    "url": "/user/logout",
+    "title": "Logout User",
+    "name": "LogoutUser",
+    "group": "Auth",
+    "version": "0.0.1",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>The success status of the request</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "\n{\n\"success\": true\n     }",
           "type": "json"
         }
       ]
