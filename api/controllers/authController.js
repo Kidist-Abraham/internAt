@@ -1,6 +1,7 @@
-		var passport= require('passport'),
-	    User = require("../models/authModel"),
-	    nodemailer = require('nodemailer');
+var passport= require('passport'),
+    jwt = require('jwt-simple'),
+    User = require("../models/authModel"),
+    nodemailer = require('nodemailer');
 
 	const Company = require("../models/companiesModel");
 	const Intern = require("../models/internsModel");
@@ -10,14 +11,14 @@
 	  service: 'gmail',
 	  auth: {
 	    user: 'kidistabraham@gmail.com',
-	    pass: ''
+	    pass: 'japanisethiopis2'
 	  }
 	});
 
 
 
 	exports.createUser = function createUser(req, res) {
-        // console.log(req.body)
+        console.log(req.body.username)
 	 req.checkBody({
 	      username: {
 	        notEmpty: true,
@@ -78,21 +79,8 @@
 	      return (err);
 	  });
 	} 
-
-	var mailOptions = {
-	  from: 'kidistabraham@gmail.com',
-	  to: user.username,
-	  subject: 'Your InternAt Account is created successfully. ',
-	  text: 'Dear '+user.name +', Welcome to InternAt, Your account has been approved. You can know start editing your profile by following the link below '
-	};
-
-	/*transporter.sendMail(mailOptions, function(error, info){
-	  if (error) {
-	    console.log(error);
-	  } else {
-	    console.log('Email sent: ' + info.response);
-	  }
-	}); */ 
+ //sendEmail(user.username,"Your InternAt Account is created successfully",'Dear '+user.name +", Welcome to InternAt, Your account has been approved. You can know start editing your profile by following the link below");
+	
 
 	TobeApproved.remove({email: user.username}, function(err, tobeApproved) {
 	    if (err)
@@ -105,14 +93,10 @@
 	                 user:user});
             console.log(user)
             
-
-	});
-	  
-	});
-
-	}
-      
-	};
+              });
+	  });
+        }
+      };
 
 	exports.loginUser=  function(req, res) {
              console.log("fdsads")
@@ -126,8 +110,113 @@
 	       res.json({success:true});
 	  };
 
+
+ exports.forgotPassword = function (req, res) {
+  User.findOne({username:req.body.email}, function(err, user) {
+    if (err){
+       return  res.json({success:false,
+                    err:err}); }
+
+        var payload = {
+            id: user._id,        
+            username:req.body.email
+        };
+        var secret = user.hash + '-' + user.date_created.getTime();
+        var token = jwt.encode(payload, secret);
+        var link = '/resetpassword/' + payload.id + '/' + token
+      
+
+        
+       sendEmail(user.username,"Your password recovery link","To recover your password click the following link " + link)
+       res.json({ success:true,
+                  message:"password recovery link has been send to user"})
+ 
+  });
+
+  
+};
+
+ exports.resetPasswordGet= function(req, res) {
+
+    User.findById(req.params.id, function(err, user) {
+    if (err){
+       return  res.send({success:false,
+                    err:err}); }
+
+      var secret = user.hash + '-' + user.date_created.getTime();
+      var payload = jwt.decode(req.params.token, secret);
+      // TODO: Gracefully handle decoding issues.
+      res.send('<form action="/user/resetpassword" method="POST">' +
+        '<input type="hidden" name="id" value="' + payload.id + '" />' +
+        '<input type="hidden" name="token" value="' + req.params.token + '" />' +
+        '<input type="password" name="password" value="" placeholder="Enter your new password..." />' +
+        '<input type="submit" value="Reset Password" />' +
+    '</form>');
+   
+  });
+
+ 
+};
+
+
+
+
+
+ exports.resetPasswordPost= function (req,res){
+
+ User.findById(req.body.id, function(err, user) {
+    if (err){
+       return  res.json({success:false,
+                    err:err}); }
+
+      var secret = user.hash + '-' + user.date_created.getTime();
+      var payload = jwt.decode(req.body.token, secret);
+      if (payload.id===req.body.id){
+ user.setPassword(req.body.password, function(err,user){
+                     if (err)
+                          return res.json({success:false,
+                                          err:err})
+                       user.save()
+                       return res.json({sucess: true,
+                                        user: user})
+                });
+     }
+   else {
+       return  res.json({success:false,
+                    message:"Something went wrong"}); }
+ 
+ });
+
+
+         }
+
+
+sendEmail = function (to,subject,text){
+
+var mailOptions = {
+	  from: 'kidistabraham@gmail.com',
+	  to: to,
+	  subject: subject,
+	  text: text
+	};
+
+	transporter.sendMail(mailOptions, function(error, info){
+	  if (error) {
+	    console.log(error);
+	  } else {
+	    console.log('Email sent: ' + info.response);
+	  }
+	}); 
+
+
+
+
+}       
+             
   /*  exports.getUser=  function(req, res) {
 
 	       res.json({success:true,
 	                 user:req.user});
 	  }; */
+
+

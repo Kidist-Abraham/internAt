@@ -49,7 +49,6 @@ require('./api/routes/approvalRoutes')(app);
 
 app.listen(port);
 
-
 console.log('InternAt RESTful API server started on: ' + port);
 
 module.exports = app

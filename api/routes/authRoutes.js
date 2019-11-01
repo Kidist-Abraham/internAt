@@ -128,5 +128,21 @@ module.exports = function(app) {
  */
  app.route('/user/logout')
      .post(auth.logout);
+
+app.route('/user/passwordreset')
+    .post(auth.forgotPassword);
+
+
+app.route('/user/resetpassword/:id/:token')
+    .get(auth.resetPasswordGet);
+
+app.route('/user/resetpassword')
+    .post(auth.resetPasswordPost);
 };
+
+
+
+
+
+
 
