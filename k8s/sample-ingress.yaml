@@ -1,0 +1,20 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: sample-ingress
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: sample-name
+    ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+  rules:
+  - host: "etc5ey.gebeya.co"
+    http:
+      paths:
+      - path: /user/*
+        backend:
+          serviceName: internat-api-frontend
+          servicePort: 80 
+      - path: /interns/*
+        backend:
+          serviceName: internat-api-frontend
+          servicePort: 80
