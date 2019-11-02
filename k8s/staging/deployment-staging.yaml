@@ -45,7 +45,7 @@ spec:
           httpGet:
             path: /
             port: 3000
-        args: ['--env="MONGOLAB_URI=$(MONGODB_URL)"']
+        args: ['--env "MONGOLAB_URI=$(MONGODB_URL)"']
         ports:
         - name: payments
           containerPort: 3000
