@@ -2,7 +2,7 @@ var passport= require('passport'),
     jwt = require('jwt-simple'),
     User = require("../models/authModel"),
     nodemailer = require('nodemailer'),
-    secret=require("./../../secret");
+   // secret=require("./../../secret");
 
 	const Company = require("../models/companiesModel");
 	const Intern = require("../models/internsModel");
@@ -12,7 +12,7 @@ var passport= require('passport'),
 	  service: 'gmail',
 	  auth: {
 	    user: 'intern.at.tech@gmail.com',
-	    pass: secret.emailPassword
+	    pass: "internat123"
 	  }
 	});
 
