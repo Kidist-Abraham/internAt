@@ -2,8 +2,8 @@ pipeline {
 
   environment {
     PROJECT = "th-eyobofficial"
-    APP_NAME = "internat-backend"
-    FE_SVC_NAME = "${APP_NAME}-frontend"
+    APP_NAME = "internat-api"
+    FE_SVC_NAME = "${APP_NAME}-svc"
     CLUSTER = "internat"
     CLUSTER_ZONE = "us-east1-d"
     IMAGE_TAG = "gcr.io/${PROJECT}/${APP_NAME}:${env.BRANCH_NAME}.${env.BUILD_NUMBER}"
@@ -12,7 +12,7 @@ pipeline {
 
   agent {
     kubernetes {
-      label 'backend'
+      label 'sample-app'
       defaultContainer 'jnlp'
       yaml """
 apiVersion: v1
