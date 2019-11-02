@@ -1,7 +1,7 @@
 var passport= require('passport'),
     jwt = require('jwt-simple'),
     User = require("../models/authModel"),
-    nodemailer = require('nodemailer'),
+    nodemailer = require('nodemailer');
    // secret=require("./../../secret");
 
 	const Company = require("../models/companiesModel");
