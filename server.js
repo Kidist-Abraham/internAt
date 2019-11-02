@@ -11,12 +11,15 @@ var express = require('express'),
   passport=require("passport"),
   LocalStrategy=require("passport-local"),
   passportLocalMongoose =require("passport-local-mongoose"),
-  methodOverride= require("method-override");
- 
-  bodyParser = require('body-parser');
+  methodOverride= require("method-override"),
+  bodyParser = require('body-parser'),
+  session = require('express-session'),
+  MongoStore = require('connect-mongo')(session);
 
 mongoose.Promise = global.Promise;
-mongoose.connect(config.MONGODB_URL); 
+mongoose.connect("mongodb+srv://kidistabraham:ethiopismongodb@internat-4z2ur.mongodb.net/test?retryWrites=true",{useNewUrlParser: true,useUnifiedTopology: true }); 
+
+
 
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -24,8 +27,13 @@ app.use(bodyParser.json());
 app.use(validator());
 app.use(methodOverride("_method"));
 
-app.use(require("express-session")({
+  
+
+app.use(session({
    secret: "God is good everytime",
+   store: new MongoStore({
+        url: "mongodb+srv://kidistabraham:ethiopismongodb@internat-4z2ur.mongodb.net/test?retryWrites=true"
+      }),
    resave:false,
    saveUninitialized: false
 
