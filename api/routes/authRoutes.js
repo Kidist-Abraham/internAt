@@ -129,7 +129,92 @@ module.exports = function(app) {
  app.route('/user/logout')
      .post(auth.logout);
 
-app.route('/user/passwordreset')
+/**
+ * @api {post} /user/forgotPassword  Login User
+ * @apiName ForgotPassword
+ * @apiGroup Auth
+ * @apiVersion 0.0.1
+
+ * @apiDescription On a valid request, a recovery link will be send to the user's email.  
+ * @apiParam {String} email The email of the User.
+ * 
+ *
+ * @apiParamExample {json} Request-Example:
+ * 	 {
+ * 		"email": "kidist.abraham@intern.io",
+ * 		
+ * 	 }
+ *
+ * 
+ * 
+   @apiSuccess {Boolean} success The success status of the request
+   @apiSuccess {String} message A success message "password recovery link has been send to user"
+ *
+ * @apiSuccessExample {json} Success-Response:
+ * 
+              { 
+                  success:true,
+                  message:"password recovery link has been send to user"}
+                              }
+ *
+ */
+
+/**
+ * @api {post} /user/forgotPassword  analize a request to forget password.
+ * @apiName ForgotPassword
+ * @apiGroup Auth
+ * @apiVersion 0.0.1
+
+ * @apiDescription On a valid request, a recovery link will be send to the user's email.  
+ * @apiParam {String} email The email of the User.
+ * 
+ *
+ * @apiParamExample {json} Request-Example:
+ * 	 {
+ * 		"email": "kidist.abraham@intern.io",
+ * 		
+ * 	 }
+ *
+ * 
+ * 
+   @apiSuccess {Boolean} success The success status of the request
+   @apiSuccess {String} message A success message "password recovery link has been send to user"
+ *
+ * @apiSuccessExample {json} Success-Response:
+ * 
+              { 
+                  success:true,
+                  message:"password recovery link has been send to user"}
+                              }
+ *
+ */
+
+
+
+/**
+ * @api {post} /user/resetpassword/:id/:token  Authorize password recovery
+ * @apiName AuthorizeResetPassword
+ * @apiGroup Auth
+ * @apiVersion 0.0.1
+
+ * @apiDescription On a valid request, a recovery link will be send to the user's email.  
+ * @apiParam {String} id The id of the User.
+   @apiParam {String} token The password recovery token of the User.
+ * 
+ *
+ *  
+   @apiSuccess {Boolean} success The success status of the request
+  
+ *
+ * @apiSuccessExample {json} Success-Response:
+ * 
+              { 
+                  success:true,
+                  message:"password recovery link has been send to user"}
+                              }
+ *
+ */
+app.route('/user/forgotPassword')
     .post(auth.forgotPassword);
 
 
@@ -138,8 +223,11 @@ app.route('/user/resetpassword/:id/:token')
 
 app.route('/user/resetpassword')
     .post(auth.resetPasswordPost);
-};
 
+app.route('/user/isLoggedin')
+    .get(auth.isLogged);
+
+};
 
 
 

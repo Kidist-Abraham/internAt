@@ -1,7 +1,8 @@
 var passport= require('passport'),
     jwt = require('jwt-simple'),
     User = require("../models/authModel"),
-    nodemailer = require('nodemailer');
+    nodemailer = require('nodemailer'),
+    secret=require("./../../secret");
 
 	const Company = require("../models/companiesModel");
 	const Intern = require("../models/internsModel");
@@ -10,8 +11,8 @@ var passport= require('passport'),
 	var transporter = nodemailer.createTransport({
 	  service: 'gmail',
 	  auth: {
-	    user: 'kidistabraham@gmail.com',
-	    pass: 'japanisethiopis2'
+	    user: 'intern.at.tech@gmail.com',
+	    pass: secret.emailPassword
 	  }
 	});
 
@@ -123,7 +124,7 @@ var passport= require('passport'),
         };
         var secret = user.hash + '-' + user.date_created.getTime();
         var token = jwt.encode(payload, secret);
-        var link = '/resetpassword/' + payload.id + '/' + token
+        var link = 'https://internat2.herokuapp.com/user/resetpassword/' + payload.id + '/' + token
       
 
         
@@ -140,12 +141,18 @@ var passport= require('passport'),
 
     User.findById(req.params.id, function(err, user) {
     if (err){
-       return  res.send({success:false,
+       return  res.json({success:false,
                     err:err}); }
 
       var secret = user.hash + '-' + user.date_created.getTime();
-      var payload = jwt.decode(req.params.token, secret);
-      // TODO: Gracefully handle decoding issues.
+ try{
+       var payload = jwt.decode(req.params.token, secret);       
+    }catch(error){
+          return  res.json({success:false,
+                    err:error}); 
+    }  
+    
+      
       res.send('<form action="/user/resetpassword" method="POST">' +
         '<input type="hidden" name="id" value="' + payload.id + '" />' +
         '<input type="hidden" name="token" value="' + req.params.token + '" />' +
@@ -170,12 +177,22 @@ var passport= require('passport'),
                     err:err}); }
 
       var secret = user.hash + '-' + user.date_created.getTime();
-      var payload = jwt.decode(req.body.token, secret);
+
+  try{
+        var payload = jwt.decode(req.body.token, secret);         
+    }catch(error){
+          return  res.json({success:false,
+                    err:error}); 
+    }  
+      
       if (payload.id===req.body.id){
  user.setPassword(req.body.password, function(err,user){
                      if (err)
                           return res.json({success:false,
                                           err:err})
+                         let now = new Date();
+                       user.date_created = now.toISOString();
+                       user.date_modified = now.toISOString()
                        user.save()
                        return res.json({sucess: true,
                                         user: user})
@@ -189,6 +206,14 @@ var passport= require('passport'),
 
 
          }
+
+exports.isLogged =  function (req,res){
+ if(req.isAuthenticated()) {
+ return res.json({success:true})
+}
+ return res.json({success:false})
+}
+
 
 
 sendEmail = function (to,subject,text){

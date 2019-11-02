@@ -11,12 +11,14 @@ var express = require('express'),
   passport=require("passport"),
   LocalStrategy=require("passport-local"),
   passportLocalMongoose =require("passport-local-mongoose"),
-  methodOverride= require("method-override");
- 
+  methodOverride= require("method-override"),
   bodyParser = require('body-parser');
 
 mongoose.Promise = global.Promise;
-mongoose.connect(config.MONGODB_URL); 
+//mongoose.connect(config.MONGODB_URL,{useNewUrlParser: true,useUnifiedTopology: true }); 
+mongoose.connect("mongodb+srv://kidistabraham:ethiopismongodb@internat-4z2ur.mongodb.net/test?retryWrites=true&w=majority",{useNewUrlParser: true,useUnifiedTopology: true }); 
+
+
 
 
 app.use(bodyParser.urlencoded({ extended: true }));
