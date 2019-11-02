@@ -19,23 +19,23 @@ spec:
       containers:
       - name: sample
         image: gcr.io/cloud-solutions-images/gceme:1.0.0
-        env:
-          - name: MONGODB_URL
-            valueFrom:
-              secretKeyRef:
-                name: mongo-secret
-                key: MONGODB_URL
-         # - name: API_URL
-          #  valueFrom:
-          #    secretKeyRef:
-          #      name: lesvault
-           #     key: api_url_staging
-          - name: NODE_ENV
-            value: production
-          - name: HOST_IP
-            valueFrom:
-              fieldRef:
-                fieldPath: status.podIP
+        # env:
+        #   - name: MONGODB_URL
+        #     valueFrom:
+        #       secretKeyRef:
+        #         name: mongo-secret
+        #         key: MONGODB_URL
+        #  # - name: API_URL
+        #   #  valueFrom:
+        #   #    secretKeyRef:
+        #   #      name: lesvault
+        #    #     key: api_url_staging
+        #   - name: NODE_ENV
+        #     value: production
+        #   - name: HOST_IP
+        #     valueFrom:
+        #       fieldRef:
+        #         fieldPath: status.podIP
         resources:
           limits:
             memory: "500Mi"
