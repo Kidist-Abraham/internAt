@@ -17,7 +17,7 @@ var express = require('express'),
   MongoStore = require('connect-mongo')(session);
 
 mongoose.Promise = global.Promise;
-mongoose.connect(config.MONGOLAB_URI,{useNewUrlParser: true,useUnifiedTopology: true }); 
+mongoose.connect("mongodb+srv://kidistabraham:ethiopismongodb@internat-4z2ur.mongodb.net/test?retryWrites=true",{useNewUrlParser: true,useUnifiedTopology: true }); 
 
 
 
