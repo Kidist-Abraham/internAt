@@ -80,7 +80,7 @@ spec:
     
     stage('Deploy Production') {
       // Production branch
-      when { branch 'master' }
+      // when { branch 'master' }
       when { branch 'debug' }
       steps{
         container('kubectl') {
