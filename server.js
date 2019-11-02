@@ -12,11 +12,12 @@ var express = require('express'),
   LocalStrategy=require("passport-local"),
   passportLocalMongoose =require("passport-local-mongoose"),
   methodOverride= require("method-override"),
-  bodyParser = require('body-parser');
+  bodyParser = require('body-parser'),
+  session = require('express-session'),
+  MongoStore = require('connect-mongo')(session);
 
 mongoose.Promise = global.Promise;
 mongoose.connect(config.MONGOLAB_URI,{useNewUrlParser: true,useUnifiedTopology: true }); 
-
 
 
 
@@ -26,8 +27,13 @@ app.use(bodyParser.json());
 app.use(validator());
 app.use(methodOverride("_method"));
 
-app.use(require("express-session")({
+  
+
+app.use(session({
    secret: "God is good everytime",
+   store: new MongoStore({
+        url: config.MONGOLAB_URI
+      }),
    resave:false,
    saveUninitialized: false
 
