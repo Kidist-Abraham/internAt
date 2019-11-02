@@ -32,7 +32,7 @@ app.use(methodOverride("_method"));
 app.use(session({
    secret: "God is good everytime",
    store: new MongoStore({
-        url: config.MONGOLAB_URI
+        url: "mongodb+srv://kidistabraham:ethiopismongodb@internat-4z2ur.mongodb.net/test?retryWrites=true"
       }),
    resave:false,
    saveUninitialized: false
