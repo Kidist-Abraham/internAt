@@ -45,7 +45,7 @@ spec:
           httpGet:
             path: /interns
             port: 3000
-        args: []
+        args: ['--env="MONGODB_URL=$(MONGODB_URL)"']
         ports:
         - name: payments
           containerPort: 3000
