@@ -14,7 +14,7 @@ spec:
       labels:
         app: sample-service
         role: sample
-        env: staging
+        env: development
     spec:
       containers:
         - name: sample
