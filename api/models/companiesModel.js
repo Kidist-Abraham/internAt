@@ -11,7 +11,8 @@ var CompanySchema = new Schema({
   field:String,
   description:String,
   LC:String,
-  role: {type: String, required: true,  default: "Company"}
+  role: {type: String, required: true,  default: "Company"},
+  myInternships:Array
 });
 
 module.exports = mongoose.model('Company', CompanySchema);
