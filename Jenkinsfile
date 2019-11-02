@@ -1,7 +1,7 @@
 pipeline {
 
   environment {
-    PROJECT = "th-eyobofficialD"
+    PROJECT = "th-eyobofficial"
     APP_NAME = "internat-api"
     FE_SVC_NAME = "${APP_NAME}-frontend"
     CLUSTER = "internat"
