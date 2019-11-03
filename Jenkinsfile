@@ -1,9 +1,5 @@
 def COLOR_MAP = ['SUCCESS': 'good', 'FAILURE': 'danger', 'UNSTABLE': 'danger', 'ABORTED': 'danger']
 
-// def getBuildUser() {
-//     return currentBuild.rawBuild.getCause(Cause.UserIdCause).getUserId()
-// }
-
 pipeline {
 
   environment {
@@ -102,7 +98,11 @@ spec:
       steps {
         slackSend channel: "#internat",
           color: COLOR_MAP[currentBuild.currentResult],
-          message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n"
+          message: """
+          *${currentBuild.currentResult}* \n
+          Job: ${env.JOB_NAME} | Build: ${env.BUILD_NUMBER}\n
+          Branch: ${env.BRANCH_NAME}
+          """
       }
     }
 }
