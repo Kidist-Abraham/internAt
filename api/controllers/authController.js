@@ -8,6 +8,7 @@ var passport= require('passport'),
 
 	const Company = require("../models/companiesModel");
 	const Intern = require("../models/internsModel");
+        const Admin = require("../models/adminModel");
 	const TobeApproved = require("../models/approvalModel");
 
 	var transporter = nodemailer.createTransport({
@@ -76,8 +77,14 @@ exports.createUser = function createUser(req, res) {
 	                LC:user.LC,
 	                role:"Company" 
 	                              };
+              admin = {
+	                first_name:user.name,
+	                email:user.username,
+	                role:"Admin" 
+	                              };
 	   let internModel= new Intern(intern),
-	    companyModel= new Company(company);
+	    companyModel= new Company(company),
+            adminModel= new Admin(admin);
 	   if(user.role==="Company"){
            console.log("I am com")
 	 companyModel.save(function(err, company) {
@@ -87,13 +94,25 @@ exports.createUser = function createUser(req, res) {
 	       });
            console.log(company);
 	   }
-	else{
+	else if (user.role==="Intern"){
 
 	 internModel.save(function(err, intern) {
 	    if (err)
 	      return (err);
 	  });
 	} 
+        else{
+        console.log("admin is about to be created");
+         adminModel.save(function(err, admin) {
+	    if (err){
+              console.log(err)
+	      return (err);
+            
+           }
+          console.log(admin)
+	  });
+
+      }
  sendEmail(user.username,"Your InternAt Account is created successfully",'Dear '+user.name +", Welcome to InternAt, Your account has been approved. You can know start editing your profile by following the link below");
 	
 
