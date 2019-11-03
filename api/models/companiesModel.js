@@ -6,8 +6,9 @@ var Schema = mongoose.Schema;
 var CompanySchema = new Schema({
   name:  String,
   email:{type: String, required: true, unique: true},
+  type:String,
   city:String,
-  catagory:String,
+  catagory:[String],
   field:String,
   description:String,
   LC:String,
@@ -16,6 +17,5 @@ var CompanySchema = new Schema({
 });
 
 module.exports = mongoose.model('Company', CompanySchema);
-
 
 

@@ -67,7 +67,7 @@ exports.createUser = function createUser(req, res) {
           
            console.log("I finished")
            let intern = {
-	                name:user.name,
+	                first_name:user.name,
 	                email:user.username,
 	                role:"Intern"
 	                                } ,
@@ -193,7 +193,7 @@ exports.get_user = function(req, res) {
         var token = jwt.encode(payload, secret);
         var link = 'https://internat2.herokuapp.com/user/resetpassword/' + payload.id + '/' + token
      //https://internat2.herokuapp.com
-      //  https://localhost:3000
+      //  http://localhost:3000
         
        sendEmail(user.username,"Your password recovery link","To recover your password click the following link " + link)
        res.json({ success:true,
@@ -263,7 +263,7 @@ exports.get_user = function(req, res) {
                        user.date_modified = now.toISOString()
                        user.save()
                        return res.json({sucess: true,
-                                        user: user})
+                                        message:"Your password has been changed successfuly"})
                 });
      }
    else {
