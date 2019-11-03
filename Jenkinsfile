@@ -99,8 +99,8 @@ spec:
         slackSend channel: "#internat",
           color: COLOR_MAP[currentBuild.currentResult],
           message: """
-          *${currentBuild.currentResult}* \n
-          Job: ${env.JOB_NAME} | Build: ${env.BUILD_NUMBER}\n
+          *${currentBuild.currentResult}* \
+          Job: ${env.JOB_NAME} [Build ${env.BUILD_NUMBER}]\
           Branch: ${env.BRANCH_NAME}
           """
       }
