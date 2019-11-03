@@ -11,14 +11,15 @@ chai.use(chaiHttp);
 
 var new_tobeApproved ={
   name:  "Test Name",
-  email: "Test@email",
+  username: "Test@email",
   role: "Company",
   LC: "Test LC"
 }
 
+
 var updated_tobeApproved ={
   name:  "updated Name",
-  email: "Test@email",
+  username: "Test@email",
   role: "Company",
   LC: "Test LC"
 }
@@ -34,14 +35,14 @@ describe('Unit testing the /tobeApproved route', function() {
         expect(res).to.have.status(200);
         //expect(res.body.status).to.equals("success");
         //console.log(res.body)
-        expect(res.body.tobeApproved).to.have.property('name',"Test Name",'email',"Test@email",'role',"Company",'LC',"Test LC");
+        expect(res.body.tobeApproved).to.have.property('name',"Test Name",'username',"Test@email",'role',"Company",'LC',"Test LC");
         tobeApprovedid=res.body.tobeApproved._id
          done();
 });
      
     });
 
-    it('should list the companies', function(done) {
+    it('should list the tobeApproveds', function(done) {
       chai
         .request(app)
         .get('/tobeApproved')
@@ -57,7 +58,7 @@ it('should get the tobeApproved by id', function(done) {
         .get('/tobeApproved/'+tobeApprovedid)
          .end((err, res) => {
           expect('Content-Type', /json/)
-          expect(res.body.tobeApproved).to.have.property('_id',tobeApprovedid,'name',"Test Name",'email',"Test@email",'role',"Company",'LC',"Test LC");
+          expect(res.body.tobeApproved).to.have.property('_id',tobeApprovedid,'name',"Test Name",'username',"Test@email",'role',"Company",'LC',"Test LC");
          done()
 });
     });
@@ -69,7 +70,7 @@ it('should update the tobeApproved by id', function(done) {
         .send(updated_tobeApproved)
          .end((err, res) => {
           expect('Content-Type', /json/)
-          expect(res.body.tobeApproved).to.have.property('_id',tobeApprovedid,'name',  "updated Name",'email',"Test@email",'role',"Company",'LC',"Test LC");
+          expect(res.body.tobeApproved).to.have.property('_id',tobeApprovedid,'name',  "updated Name",'username',"Test@email",'role',"Company",'LC',"Test LC");
          done()
 });
     });

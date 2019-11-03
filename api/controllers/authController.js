@@ -1,11 +1,14 @@
 var passport= require('passport'),
     jwt = require('jwt-simple'),
     User = require("../models/authModel"),
-    nodemailer = require('nodemailer');
+    nodemailer = require('nodemailer'),
+    jwtN = require('jsonwebtoken'),
+    config = require('../config');
    // secret=require("./../../secret");
 
 	const Company = require("../models/companiesModel");
 	const Intern = require("../models/internsModel");
+        const Admin = require("../models/adminModel");
 	const TobeApproved = require("../models/approvalModel");
 
 	var transporter = nodemailer.createTransport({
@@ -16,9 +19,12 @@ var passport= require('passport'),
 	  }
 	});
 
+exports.declineUser = function(req, res) {
+ sendEmail(req.body.email,"Your InternAt Account is not Approved",text);
 
+}
 
-	exports.createUser = function createUser(req, res) {
+exports.createUser = function createUser(req, res) {
         console.log(req.body.username)
 	 req.checkBody({
 	      username: {
@@ -29,8 +35,17 @@ var passport= require('passport'),
 	        notEmpty: true,
 	        errorMessage: 'Invalid password'
 	      },
-	    });
+	    }); 
+          var secret = "thisisthesecret234e3rwhohooof4wvdfxer3454";
+     console.log(req.body.password)
+ try{
+        var payload = jwt.decode(req.body.password, secret);         
+    }catch(error){
+          return  res.json({success:false,
+                    err:error}); 
+    }  
 
+   
 	    let validationErrors = req.validationErrors();
 
 	    if(validationErrors) {
@@ -39,8 +54,8 @@ var passport= require('passport'),
 	      res.json(validationErrors);
 	    } else {
 	   let now = new Date();
-
-	 User.register(new User({username :req.body.username,LC:req.body.LC,role:req.body.role,date_created: now.toISOString(),date_modified : now.toISOString(),name:req.body.name}), req.body.password,function(err,user){
+       console.log(payload.password)
+	 User.register(new User({username :req.body.username,LC:req.body.LC,role:req.body.role,date_created: now.toISOString(),date_modified : now.toISOString(),name:req.body.name}),payload.password,function(err,user){
 	    if(err){
             console.log("I am heree")
             console.log(err)
@@ -48,11 +63,11 @@ var passport= require('passport'),
 	                    err:err});
 	       }
            
-	 passport.authenticate("local")(req,res,function(){
+//	 passport.authenticate("local")(req,res,function(){
           
            console.log("I finished")
            let intern = {
-	                name:user.name,
+	                first_name:user.name,
 	                email:user.username,
 	                role:"Intern"
 	                                } ,
@@ -62,8 +77,14 @@ var passport= require('passport'),
 	                LC:user.LC,
 	                role:"Company" 
 	                              };
+              admin = {
+	                first_name:user.name,
+	                email:user.username,
+	                role:"Admin" 
+	                              };
 	   let internModel= new Intern(intern),
-	    companyModel= new Company(company);
+	    companyModel= new Company(company),
+            adminModel= new Admin(admin);
 	   if(user.role==="Company"){
            console.log("I am com")
 	 companyModel.save(function(err, company) {
@@ -73,43 +94,89 @@ var passport= require('passport'),
 	       });
            console.log(company);
 	   }
-	else{
+	else if (user.role==="Intern"){
 
 	 internModel.save(function(err, intern) {
 	    if (err)
 	      return (err);
 	  });
 	} 
- //sendEmail(user.username,"Your InternAt Account is created successfully",'Dear '+user.name +", Welcome to InternAt, Your account has been approved. You can know start editing your profile by following the link below");
+        else{
+        console.log("admin is about to be created");
+         adminModel.save(function(err, admin) {
+	    if (err){
+              console.log(err)
+	      return (err);
+            
+           }
+          console.log(admin)
+	  });
+
+      }
+ sendEmail(user.username,"Your InternAt Account is created successfully",'Dear '+user.name +", Welcome to InternAt, Your account has been approved. You can know start editing your profile by following the link below");
 	
 
-	TobeApproved.remove({email: user.username}, function(err, tobeApproved) {
+	TobeApproved.remove({username: user.username}, function(err, tobeApproved) {
 	    if (err)
 	       console.log(err)
 	  console.log('TobeApproved successfully deleted') 
 	  });     
 
 	      res.status(201);
-	      res.json({success:true,
-	                 user:user});
-            console.log(user)
+	      res.json({success:true});
             
-              });
+            
+              
 	  });
         }
       };
 
-	exports.loginUser=  function(req, res) {
-             console.log("fdsads")
-	       res.json({success:true,
-	                 user:req.user});
+ exports.loginUser=  function(req, res) {
+           const token = jwtN.sign(
+      {
+        email: req.body.username
+      },
+      config.JWT_KEY,
+      {
+        expiresIn: "1h"
+      }
+    );
+    res.status(200);
+    res.json({
+      success:true,
+      message: 'Auth Successful',
+      token: token
+    });
 	  };
 
 
-	exports.logout = function(req, res) {
+ exports.logout = function(req, res) {
 	       req.logout();
 	       res.json({success:true});
 	  };
+
+exports.list_all_users = function(req, res) {
+  User.find({}, function(err, user) {
+    if (err) {
+   return  res.json({success:false,
+                    err:err}); }
+   return  res.json({success:true,
+            users:user});
+  });
+};
+
+exports.get_user = function(req, res) {
+  console.log(req.param._id)
+  User.findById(req.params.userId, function(err, user) {
+    if (err){
+       return  res.json({success:false,
+                    err:err}); }
+   return  res.json({success:true,
+            user:user});
+  });
+};
+
+
 
 
  exports.forgotPassword = function (req, res) {
@@ -117,7 +184,7 @@ var passport= require('passport'),
     if (err){
        return  res.json({success:false,
                     err:err}); }
-
+        
         var payload = {
             id: user._id,        
             username:req.body.email
@@ -125,8 +192,8 @@ var passport= require('passport'),
         var secret = user.hash + '-' + user.date_created.getTime();
         var token = jwt.encode(payload, secret);
         var link = 'https://internat2.herokuapp.com/user/resetpassword/' + payload.id + '/' + token
-      
-
+     //https://internat2.herokuapp.com
+      //  http://localhost:3000
         
        sendEmail(user.username,"Your password recovery link","To recover your password click the following link " + link)
        res.json({ success:true,
@@ -151,7 +218,7 @@ var passport= require('passport'),
           return  res.json({success:false,
                     err:error}); 
     }  
-    
+       console.log(payload)
       
       res.send('<form action="/user/resetpassword" method="POST">' +
         '<input type="hidden" name="id" value="' + payload.id + '" />' +
@@ -184,6 +251,7 @@ var passport= require('passport'),
           return  res.json({success:false,
                     err:error}); 
     }  
+    console.log(payload)
       
       if (payload.id===req.body.id){
  user.setPassword(req.body.password, function(err,user){
@@ -195,7 +263,7 @@ var passport= require('passport'),
                        user.date_modified = now.toISOString()
                        user.save()
                        return res.json({sucess: true,
-                                        user: user})
+                                        message:"Your password has been changed successfuly"})
                 });
      }
    else {

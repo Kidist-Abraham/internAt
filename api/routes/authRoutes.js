@@ -214,6 +214,16 @@ module.exports = function(app) {
                               }
  *
  */
+
+
+
+
+app.route('/user')
+    .get(auth.list_all_users);
+
+app.route('/user/:userId')
+    .get(auth.get_user);
+
 app.route('/user/forgotPassword')
     .post(auth.forgotPassword);
 
