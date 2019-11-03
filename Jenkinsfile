@@ -102,7 +102,7 @@ spec:
       steps {
         container('kubectl') {
           // Create namespace if it doesn't exist
-          //sh("kubectl get ns ${env.BRANCH_NAME} || kubectl create ns ${env.BRANCH_NAME}")
+          sh("kubectl get ns ${env.BRANCH_NAME} || kubectl create ns ${env.BRANCH_NAME}")
           // Don't use public load balancing for development branches
           // sh("kubectl get ns development")
           // sh("sed -i.bak 's#LoadBalancer#ClusterIP#' ./k8s/services/frontend.yaml")
