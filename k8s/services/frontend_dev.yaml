@@ -10,5 +10,5 @@ spec:
       targetPort: 3000
   selector:
     app: fe-service
-    role: fe
+    role: be
     env: development

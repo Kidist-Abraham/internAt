@@ -24,11 +24,6 @@ spec:
   # Use service account that can deploy to all namespaces
   serviceAccountName: cd-jenkins
   containers:
-  #- name: golang
-   # image: golang:1.10
-#    command:
- #   - cat
-  #  tty: true
   - name: gcloud
     image: gcr.io/cloud-builders/gcloud
     command:
@@ -72,7 +67,7 @@ spec:
           sh("kubectl get ns production")
           sh("sed -i.bak 's#gcr.io/cloud-solutions-images/gceme:1.0.0#${IMAGE_TAG}#' ./k8s/production/*.yaml")
           step([$class: 'KubernetesEngineBuilder',namespace:'production', projectId: env.PROJECT, clusterName: env.CLUSTER, zone: env.CLUSTER_ZONE, manifestPattern: 'k8s/services', credentialsId: env.JENKINS_CRED, verifyDeployments: false])
-          step([$class: 'KubernetesEngineBuilder',namespace:'production', projectId: env.PROJECT, clusterName: env.CLUSTER, zone: env.CLUSTER_ZONE, manifestPattern: 'k8s/production', credentialsId: env.JENKINS_CRED, verifyDeployments: true])
+          step([$class: 'KubernetesEngineBuilder',namespace:'production', projectId: env.PROJECT, clusterName: env.CLUSTER, zone: env.CLUSTER_ZONE, manifestPattern: 'k8s/deployments/production', credentialsId: env.JENKINS_CRED, verifyDeployments: true])
           sh("echo http://`kubectl --namespace=staging get service/${FE_SVC_NAME} -o jsonpath='{.status.loadBalancer.ingress[0].ip}'` > ${FE_SVC_NAME}")
         }
       }
@@ -88,7 +83,7 @@ spec:
           sh("kubectl get ns development")
           sh("sed -i.bak 's#gcr.io/gcr-project/sample:1.0.0#${IMAGE_TAG}#' ./k8s/development/*.yaml")
           step([$class: 'KubernetesEngineBuilder',namespace: "development", projectId: env.PROJECT, clusterName: env.CLUSTER, zone: env.CLUSTER_ZONE, manifestPattern: 'k8s/services', credentialsId: env.JENKINS_CRED, verifyDeployments: false])
-          step([$class: 'KubernetesEngineBuilder',namespace: "development", projectId: env.PROJECT, clusterName: env.CLUSTER, zone: env.CLUSTER_ZONE, manifestPattern: 'k8s/development', credentialsId: env.JENKINS_CRED, verifyDeployments: true])
+          step([$class: 'KubernetesEngineBuilder',namespace: "development", projectId: env.PROJECT, clusterName: env.CLUSTER, zone: env.CLUSTER_ZONE, manifestPattern: 'k8s/deployments/development', credentialsId: env.JENKINS_CRED, verifyDeployments: true])
         }
       }
     }  

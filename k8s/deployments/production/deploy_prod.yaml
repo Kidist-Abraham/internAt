@@ -1,12 +1,13 @@
 kind: Deployment
 apiVersion: extensions/v1beta1
 metadata:
-  name: development-staging
+  name: production-deployment
 spec:
   selector:
     matchLabels:
       app: fe-service
-      role: fe
+      role: be
+      env: production
   replicas: 1
   template:
     metadata:
@@ -14,23 +15,23 @@ spec:
       labels:
         app: fe-service
         role: fe
-        env: staging
+        env: production
     spec:
       containers:
-        - name: api
+        - name: node-app
           image: gcr.io/gcr-project/sample:1.0.0
           env:
-            - name: MONGOLAB_DB
+            - name: MONGOLAB_URI
               valueFrom:
                 secretKeyRef:
                   name: mongo-secret
                   key: MONGOLAB_URI
-            - name: NODE_ENV
-              value: production
-            - name: HOST_IP
-              valueFrom:
-                fieldRef:
-                  fieldPath: status.podIP
+            # - name: NODE_ENV
+            #   value: production
+            # - name: HOST_IP
+            #   valueFrom:
+            #     fieldRef:
+            #       fieldPath: status.podIP
           resources:
             limits:
               memory: "500Mi"
@@ -41,5 +42,5 @@ spec:
               path: /interns
               port: 3000
           ports:
-            - name: http # Match service ()
+            - name: http
               containerPort: 3000
