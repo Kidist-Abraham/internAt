@@ -141,12 +141,19 @@ exports.createUser = function createUser(req, res) {
         expiresIn: "1h"
       }
     );
-    res.status(200);
+     User.findOne({username:req.body.username}, function(err, user) {
+    if (err){
+       return  res.json({success:false,
+                    err:err}); }
+   res.status(200);
     res.json({
       success:true,
       message: 'Auth Successful',
-      token: token
+      token: token,
+      user:user
     });
+  });
+    
 	  };
 
 
