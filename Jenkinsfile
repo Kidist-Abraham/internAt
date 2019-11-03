@@ -1,8 +1,10 @@
+def COLOR_MAP = ['SUCCESS': 'good', 'FAILURE': 'danger', 'UNSTABLE': 'danger', 'ABORTED': 'danger']
+
 pipeline {
 
   environment {
     PROJECT = "th-eyobofficial"
-    APP_NAME = "internat-api"
+    APP_NAME = "api"
     FE_SVC_NAME = "${APP_NAME}-frontend"
     CLUSTER = "internat"
     CLUSTER_ZONE = "us-east1-d"
@@ -12,7 +14,7 @@ pipeline {
 
   agent {
     kubernetes {
-      label 'sample-app'
+      label 'jenkins-app'
       defaultContainer 'jnlp'
       yaml """
 apiVersion: v1
@@ -24,11 +26,11 @@ spec:
   # Use service account that can deploy to all namespaces
   serviceAccountName: cd-jenkins
   containers:
-  #- name: golang
-   # image: golang:1.10
-#    command:
- #   - cat
-  #  tty: true
+  - name: node
+    image: node:latest
+    command:
+    - cat
+    tty: true
   - name: gcloud
     image: gcr.io/cloud-builders/gcloud
     command:
@@ -44,15 +46,14 @@ spec:
   }
   stages {
     // stage('Test') {
-    //   #steps {
-    //    # container('golang') {
-    //     #  sh """
-    //      #   ln -s `pwd` /go/src/sample-app
-    //      #   cd /go/src/sample-app
-    //      #   go test
-    //      # """
-    //    # }
-    //   #}
+    //   steps {
+    //     container('node') {
+    //       sh """
+    //         npm install
+    //         npm test
+    //       """
+    //     }
+    //   }
     // }
     
     stage('Build and push image with Container Builder') {
@@ -63,54 +64,42 @@ spec:
       }
     }
     
-    
-  stage('Deploy Canary') {
-      // Canary branch
-      when { branch 'canary' }
-      steps {
-        container('kubectl') {
-          // Change deployed image in canary to the one we just built
-          sh("sed -i.bak 's#gcr.io/cloud-solutions-images/gceme:1.0.0#${IMAGE_TAG}#' ./k8s/canary/*.yaml")
-          step([$class: 'KubernetesEngineBuilder',namespace:'production', projectId: env.PROJECT, clusterName: env.CLUSTER, zone: env.CLUSTER_ZONE, manifestPattern: 'k8s/services', credentialsId: env.JENKINS_CRED, verifyDeployments: false])
-          step([$class: 'KubernetesEngineBuilder',namespace:'production', projectId: env.PROJECT, clusterName: env.CLUSTER, zone: env.CLUSTER_ZONE, manifestPattern: 'k8s/canary', credentialsId: env.JENKINS_CRED, verifyDeployments: true])
-          sh("echo http://`kubectl --namespace=production get service/${FE_SVC_NAME} -o jsonpath='{.status.loadBalancer.ingress[0].ip}'` > ${FE_SVC_NAME}")
-        }
-      }
-    }
-    
     stage('Deploy Production') {
       // Production branch
-      when { branch 'development' }
+      when { branch 'master' }
       steps{
         container('kubectl') {
         // Change deployed image in canary to the one we just built
-          sh("sed -i.bak 's#gcr.io/cloud-solutions-images/gceme:1.0.0#${IMAGE_TAG}#' ./k8s/staging/*.yaml")
-          step([$class: 'KubernetesEngineBuilder',namespace:'production', projectId: env.PROJECT, clusterName: env.CLUSTER, zone: env.CLUSTER_ZONE, manifestPattern: 'k8s/services', credentialsId: env.JENKINS_CRED, verifyDeployments: false])
-          step([$class: 'KubernetesEngineBuilder',namespace:'production', projectId: env.PROJECT, clusterName: env.CLUSTER, zone: env.CLUSTER_ZONE, manifestPattern: 'k8s/staging', credentialsId: env.JENKINS_CRED, verifyDeployments: true])
+          sh("kubectl get ns production")
+          sh("sed -i.bak 's#gcr.io/gcr-project/sample:1.0.0#${IMAGE_TAG}#' ./k8s/deployments/production/*.yaml")
+          step([$class: 'KubernetesEngineBuilder',namespace:'production', projectId: env.PROJECT, clusterName: env.CLUSTER, zone: env.CLUSTER_ZONE, manifestPattern: 'k8s/services/production', credentialsId: env.JENKINS_CRED, verifyDeployments: false])
+          step([$class: 'KubernetesEngineBuilder',namespace:'production', projectId: env.PROJECT, clusterName: env.CLUSTER, zone: env.CLUSTER_ZONE, manifestPattern: 'k8s/deployments/production', credentialsId: env.JENKINS_CRED, verifyDeployments: true])
           sh("echo http://`kubectl --namespace=staging get service/${FE_SVC_NAME} -o jsonpath='{.status.loadBalancer.ingress[0].ip}'` > ${FE_SVC_NAME}")
         }
       }
     }
     
-    // stage('Deploy Dev') {
-    //   // Developer Branches
-    //   when {
-    //     not { branch 'master' }
-    //     not { branch 'canary' }
-    //   }
-    //   steps {
-    //     container('kubectl') {
-    //       // Create namespace if it doesn't exist
-    //       sh("kubectl get ns ${env.BRANCH_NAME} || kubectl create ns ${env.BRANCH_NAME}")
-    //       // Don't use public load balancing for development branches
-    //       sh("sed -i.bak 's#LoadBalancer#ClusterIP#' ./k8s/services/frontend.yaml")
-    //       sh("sed -i.bak 's#gcr.io/cloud-solutions-images/gceme:1.0.0#${IMAGE_TAG}#' ./k8s/staging/*.yaml")
-    //       step([$class: 'KubernetesEngineBuilder',namespace: "${env.BRANCH_NAME}", projectId: env.PROJECT, clusterName: env.CLUSTER, zone: env.CLUSTER_ZONE, manifestPattern: 'k8s/services', credentialsId: env.JENKINS_CRED, verifyDeployments: false])
-    //       step([$class: 'KubernetesEngineBuilder',namespace: "${env.BRANCH_NAME}", projectId: env.PROJECT, clusterName: env.CLUSTER, zone: env.CLUSTER_ZONE, manifestPattern: 'k8s/dev', credentialsId: env.JENKINS_CRED, verifyDeployments: true])
-    //       echo 'To access your environment run `kubectl proxy`'
-    //       echo "Then access your service via http://localhost:8001/api/v1/proxy/namespaces/${env.BRANCH_NAME}/services/${FE_SVC_NAME}:80/"
-    //     }
-    //   }
-    // }  
+    stage('Deploy Development') {
+      // Developer Branches
+      when {
+        not { branch 'master' }
+      }
+      steps {
+        container('kubectl') {
+          sh("kubectl get ns development")
+          sh("sed -i.bak 's#gcr.io/gcr-project/sample:1.0.0#${IMAGE_TAG}#' ./k8s/deployments/development/*.yaml")
+          step([$class: 'KubernetesEngineBuilder',namespace: "development", projectId: env.PROJECT, clusterName: env.CLUSTER, zone: env.CLUSTER_ZONE, manifestPattern: 'k8s/services/development', credentialsId: env.JENKINS_CRED, verifyDeployments: false])
+          step([$class: 'KubernetesEngineBuilder',namespace: "development", projectId: env.PROJECT, clusterName: env.CLUSTER, zone: env.CLUSTER_ZONE, manifestPattern: 'k8s/deployments/development', credentialsId: env.JENKINS_CRED, verifyDeployments: true])
+        }
+      }
+    }
+
+    stage('Slack Feedback') {
+      steps {
+        slackSend channel: "#internat",
+          color: COLOR_MAP[currentBuild.currentResult],
+          message: "*${currentBuild.currentResult}* \nJob: ${env.JOB_NAME} [Build ${env.BUILD_NUMBER}] \n${env.BUILD_URL}"
+      }
+    }
 }
 }

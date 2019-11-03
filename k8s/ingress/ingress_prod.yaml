@@ -1,0 +1,28 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: production-ingress
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: production-api-ip
+    ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+  rules:
+  - host: "api.etc5ey.gebeya.co"
+    http:
+      paths:
+      - path: /user/*
+        backend:
+          serviceName: fe-production-service
+          servicePort: 80
+      - path: /companies/*
+        backend:
+          serviceName: fe-production-service
+          servicePort: 80
+      - path: /interns/*
+        backend:
+          serviceName: fe-production-service
+          servicePort: 80
+      - path: /tobeApproved/*
+        backend:
+          serviceName: fe-production-service
+          servicePort: 80
