@@ -90,6 +90,12 @@ spec:
           step([$class: 'KubernetesEngineBuilder',namespace: "development", projectId: env.PROJECT, clusterName: env.CLUSTER, zone: env.CLUSTER_ZONE, manifestPattern: 'k8s/deployments/development', credentialsId: env.JENKINS_CRED, verifyDeployments: true])
         }
       }
-    }  
+    }
+
+    stage('Slack Feedback') {
+      steps {
+        slackSend "Build Started - ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+      }
+    }
 }
 }
