@@ -41,5 +41,5 @@ spec:
               path: /interns
               port: 3000
           ports:
-            - name: http
+            - name: http # Match service ()
               containerPort: 3000

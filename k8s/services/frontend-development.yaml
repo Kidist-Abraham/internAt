@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: fe-service
+  name: fe-development-service
 spec:
   type: LoadBalancer
   ports:
@@ -11,3 +11,4 @@ spec:
   selector:
     app: fe-service
     role: fe
+    env: development

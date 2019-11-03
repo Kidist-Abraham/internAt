@@ -82,15 +82,10 @@ spec:
       // Developer Branches
       when {
         not { branch 'master' }
-        not { branch 'canary' }
       }
       steps {
         container('kubectl') {
-          // Create namespace if it doesn't exist
-          // sh("kubectl get ns ${env.BRANCH_NAME} || kubectl create ns ${env.BRANCH_NAME}")
-          // Don't use public load balancing for development branches
           sh("kubectl get ns development")
-          // sh("sed -i.bak 's#LoadBalancer#ClusterIP#' ./k8s/services/frontend.yaml")
           sh("sed -i.bak 's#gcr.io/gcr-project/sample:1.0.0#${IMAGE_TAG}#' ./k8s/development/*.yaml")
           step([$class: 'KubernetesEngineBuilder',namespace: "development", projectId: env.PROJECT, clusterName: env.CLUSTER, zone: env.CLUSTER_ZONE, manifestPattern: 'k8s/services', credentialsId: env.JENKINS_CRED, verifyDeployments: false])
           step([$class: 'KubernetesEngineBuilder',namespace: "development", projectId: env.PROJECT, clusterName: env.CLUSTER, zone: env.CLUSTER_ZONE, manifestPattern: 'k8s/development', credentialsId: env.JENKINS_CRED, verifyDeployments: true])
