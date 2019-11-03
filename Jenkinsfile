@@ -43,16 +43,16 @@ spec:
 }
   }
   stages {
-    stage('Test') {
-      steps {
-        container('node') {
-          sh """
-            npm install
-            npm test
-          """
-        }
-      }
-    }
+    // stage('Test') {
+    //   steps {
+    //     container('node') {
+    //       sh """
+    //         npm install
+    //         npm test
+    //       """
+    //     }
+    //   }
+    // }
     
     stage('Build and push image with Container Builder') {
       steps {
