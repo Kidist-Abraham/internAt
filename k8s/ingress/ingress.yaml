@@ -1,9 +1,9 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: production-ingress
+  name: api-ingress
   annotations:
-    kubernetes.io/ingress.global-static-ip-name: production-api-ip
+    kubernetes.io/ingress.global-static-ip-name: api-fe-ip
     ingress.kubernetes.io/ssl-redirect: "true"
 spec:
   rules:
@@ -12,17 +12,17 @@ spec:
       paths:
       - path: /user/*
         backend:
-          serviceName: fe-production-service
+          serviceName: api-fe-service
           servicePort: 80
       - path: /companies/*
         backend:
-          serviceName: fe-production-service
+          serviceName: api-fe-service
           servicePort: 80
       - path: /interns/*
         backend:
-          serviceName: fe-production-service
+          serviceName: api-fe-service
           servicePort: 80
       - path: /tobeApproved/*
         backend:
-          serviceName: fe-production-service
+          serviceName: api-fe-service
           servicePort: 80
