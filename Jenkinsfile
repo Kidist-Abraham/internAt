@@ -101,8 +101,7 @@ spec:
           message: """
           *${currentBuild.currentResult}* \
           Job: ${env.JOB_NAME} [Build ${env.BUILD_NUMBER}] \
-          Branch: ${env.BRANCH_NAME} \
-          ${BUILD_URL}
+          ${env.BUILD_URL}
           """
       }
     }
