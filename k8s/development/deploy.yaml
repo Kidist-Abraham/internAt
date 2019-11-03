@@ -20,7 +20,7 @@ spec:
         - name: api
           image: gcr.io/gcr-project/sample:1.0.0
           env:
-            - name: MONGOLAB_URI
+            - name: MONGOLAB_URIx
               valueFrom:
                 secretKeyRef:
                   name: mongo-secret
