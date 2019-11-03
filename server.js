@@ -8,6 +8,7 @@ var express = require('express'),
   User= require('./api/models/authModel'), 
   Admin= require('./api/models/adminModel'),
   TobeApproved= require('./api/models/approvalModel'),
+  Interships= require('./api/models/internshipsModel'), 
   validator = require('express-validator'),
   passport=require("passport"),
   LocalStrategy=require("passport-local"),
@@ -65,6 +66,7 @@ require('./api/routes/companyRoutes')(app);
 require('./api/routes/authRoutes')(app);
 require('./api/routes/approvalRoutes')(app);
 require('./api/routes/adminRoutes')(app);
+require('./api/routes/internshipsRoutes')(app);
 
 app.listen(port);
 
