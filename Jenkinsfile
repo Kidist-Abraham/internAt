@@ -25,7 +25,7 @@ spec:
   serviceAccountName: cd-jenkins
   containers:
   - name: node
-    image: node:latest
+    build: .
     command:
     - cat
     tty: true
