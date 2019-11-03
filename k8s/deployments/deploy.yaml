@@ -10,7 +10,7 @@ spec:
   replicas: 2
   template:
     metadata:
-      name: api-pod
+      name: api-deployment
       labels:
         app: fe-service
         role: be
@@ -19,7 +19,7 @@ spec:
         - name: node-app
           image: gcr.io/gcr-project/sample:1.0.0
           env:
-            - name: MONGOLAB_DB
+            - name: MONGOLAB_URI
               valueFrom:
                 secretKeyRef:
                   name: mongo-secret

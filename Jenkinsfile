@@ -64,9 +64,9 @@ spec:
       }
     }
     
-    stage('Deploy Development') {
+    stage('Deploy Backend API') {
       // Developer Branches
-      when { branch 'development' }
+      when { branch 'cicd' }
       steps {
         container('kubectl') {
           sh("kubectl get ns backend")
