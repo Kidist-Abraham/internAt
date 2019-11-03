@@ -20,7 +20,7 @@ var passport= require('passport'),
 	});
 
 exports.declineUser = function(req, res) {
- sendEmail(req.body.email,"Your InternAt Account is not Approved",text);
+ sendEmail(req.body.email,"Your InternAt Account is not Approved",req.body.text);
 
 }
 
