@@ -47,6 +47,7 @@ spec:
       steps {
         container('node') {
           sh """
+            npm install
             npm test
           """
         }
