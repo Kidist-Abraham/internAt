@@ -94,7 +94,7 @@ spec:
 
     stage('Slack Feedback') {
       steps {
-        slackSend "Build Started - ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+        slackSend channel: "#internat", message: "Build Started: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
       }
     }
 }
