@@ -66,7 +66,7 @@ spec:
     
     stage('Deploy Backend API') {
       // Developer Branches
-      when { branch 'cicd' }
+      when { branch 'development' }
       steps {
         container('kubectl') {
           sh("kubectl get ns backend")
@@ -77,12 +77,12 @@ spec:
       }
     }
 
-    // stage('Slack Feedback') {
-    //   steps {
-    //     slackSend channel: "#internat",
-    //       color: COLOR_MAP[currentBuild.currentResult],
-    //       message: "*${currentBuild.currentResult}* \nJob: ${env.JOB_NAME} [Build ${env.BUILD_NUMBER}] \n${env.BUILD_URL}"
-    //   }
-    // }
+    stage('Slack Feedback') {
+      steps {
+        slackSend channel: "#internat",
+          color: COLOR_MAP[currentBuild.currentResult],
+          message: "*${currentBuild.currentResult}* \nJob: ${env.JOB_NAME} [Build ${env.BUILD_NUMBER}] \n${env.BUILD_URL}"
+      }
+    }
 }
 }
