@@ -100,8 +100,9 @@ spec:
           color: COLOR_MAP[currentBuild.currentResult],
           message: """
           *${currentBuild.currentResult}* \
-          Job: ${env.JOB_NAME} [Build ${env.BUILD_NUMBER}]\
-          Branch: ${env.BRANCH_NAME}
+          Job: ${env.JOB_NAME} [Build ${env.BUILD_NUMBER}] \
+          Branch: ${env.BRANCH_NAME} \
+          ${BUILD_URL}
           """
       }
     }
