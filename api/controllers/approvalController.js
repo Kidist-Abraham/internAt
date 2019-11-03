@@ -2,6 +2,7 @@
 
 
 var mongoose = require('mongoose'),
+    jwt = require('jwt-simple'),
 TobeApproved = mongoose.model('TobeApproved');
 
 exports.list_all_tobeApproved = function(req, res) {
@@ -18,13 +19,21 @@ exports.list_all_tobeApproved = function(req, res) {
 
 
 exports.create_tobeApproved = function(req, res) {
-  var new_tobeApproved = new TobeApproved(req.body);
+  
+  var tobe = req.body
+ 
+  var payload = {
+            password: req.body.password
+        };
+        var secret = "thisisthesecret234e3rwhohooof4wvdfxer3454";
+        var token = jwt.encode(payload, secret);
+   tobe.password=token
+  var new_tobeApproved = new TobeApproved(tobe);
   new_tobeApproved.save(function(err, tobeApproved) {
     if (err){
    return  res.send({success:false,
                     err:err}); }
-   return  res.json({success:true,
-            tobeApproved:tobeApproved});
+   return  res.json({success:true});
   });
 };
 
@@ -64,4 +73,5 @@ exports.delete_tobeApproved = function(req, res) {
                message: 'TobeApproved successfully deleted' });
   });
 };
+
 

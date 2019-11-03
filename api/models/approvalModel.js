@@ -5,9 +5,11 @@ var Schema = mongoose.Schema;
 
 var TobeApprovedSchema = new Schema({
   name:  String,
-  email:{type: String, required: true, unique: true},
+  username:{type: String, required: true, unique: true},
   LC:String,
-  role: {type: String, required: true,  default: "Company"}
+  role: {type: String, required: true,  default: "Company"},
+  password: String
+  
 });
 
 module.exports = mongoose.model('TobeApproved', TobeApprovedSchema);

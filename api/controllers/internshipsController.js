@@ -23,7 +23,7 @@ exports.create_internships = function(req, res) {
     if (err){
         return  res.json({success:false,
                     err:err}); }
-      Company.findOne(({email:internships.email}), function(err, company) {
+      Company.findOne({email:internships.email}, function(err, company) {
     if (err){
        return  res.json({success:false,
                     err:err}); }
