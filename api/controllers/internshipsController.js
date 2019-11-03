@@ -27,8 +27,17 @@ exports.create_internships = function(req, res) {
     if (err){
        return  res.json({success:false,
                     err:err}); }
-       company.myInternships == company.myInternships.push(internships)
+                     console.log(company)
+     var  updatedInternships = company.myInternships.push(internships)
+      Company.findOneAndUpdate({email:internships.email}, updatedInternships, {new: true}, function(err, internships) {
+        if (err){
+          return  res.json({success:false,
+                        err:err}); }
+         return  res.json({success:true,
+                        internships:internships});
+       
   });
+});
       
    return  res.json({success:true,
             internships:internships});
@@ -38,7 +47,7 @@ exports.create_internships = function(req, res) {
 
 exports.get_internships = function(req, res) {
 console.log(req.params.internshipsId)
-  Company.findById(req.params.internshipsId, function(err, internships) {
+Internships.findById(req.params.internshipsId, function(err, internships) {
     if (err){
        return  res.json({success:false,
                     err:err}); }
@@ -49,10 +58,18 @@ console.log(req.params.internshipsId)
 
 
 exports.update_internships = function(req, res) {
-  Company.findOneAndUpdate({_id: req.params.internshipsId}, req.body, {new: true}, function(err, internships) {
+    Internships.findOneAndUpdate({_id: req.params.internshipsId}, req.body, {new: true}, function(err, internships) {
     if (err){
       return  res.json({success:false,
                     err:err}); }
+
+     Company.findOne({email:internships.email}, function(err, company) {
+    if (err){
+       return  res.json({success:false,
+                    err:err}); }
+       company.myInternships = company.myInternships.push(internships)
+       company.save()
+  });
    return  res.json({success:true,
             internships:internships});
   });
