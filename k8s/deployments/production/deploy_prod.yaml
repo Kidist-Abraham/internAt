@@ -14,7 +14,7 @@ spec:
       name: api-deployment
       labels:
         app: fe-service
-        role: fe
+        role: be
         env: production
     spec:
       containers:
