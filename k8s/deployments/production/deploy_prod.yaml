@@ -26,12 +26,6 @@ spec:
                 secretKeyRef:
                   name: mongo-secret
                   key: MONGOLAB_URI
-            # - name: NODE_ENV
-            #   value: production
-            # - name: HOST_IP
-            #   valueFrom:
-            #     fieldRef:
-            #       fieldPath: status.podIP
           resources:
             limits:
               memory: "500Mi"
