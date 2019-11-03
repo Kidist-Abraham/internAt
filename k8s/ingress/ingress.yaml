@@ -12,9 +12,9 @@ spec:
       paths:
       - path: /user/*
         backend:
-          serviceName: internat-api-frontend
-          servicePort: 80 
+          serviceName: sample-service
+          servicePort: 3000
       - path: /interns/*
         backend:
-          serviceName: internat-api-frontend
-          servicePort: 80
+          serviceName: sample-service
+          servicePort: 3000
