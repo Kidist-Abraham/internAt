@@ -12,7 +12,7 @@ pipeline {
 
   agent {
     kubernetes {
-      label 'sample-app'
+      label 'jenkins-app'
       defaultContainer 'jnlp'
       yaml """
 apiVersion: v1
@@ -24,6 +24,11 @@ spec:
   # Use service account that can deploy to all namespaces
   serviceAccountName: cd-jenkins
   containers:
+  - name: node
+    image: node:latest
+    command:
+    - cat
+    tty: true
   - name: gcloud
     image: gcr.io/cloud-builders/gcloud
     command:
@@ -40,9 +45,8 @@ spec:
   stages {
     stage('Test') {
       steps {
-        container('node-app') {
+        container('node') {
           sh """
-            cd /usr/app/
             npm test
           """
         }
