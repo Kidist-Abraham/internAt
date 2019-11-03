@@ -237,6 +237,10 @@ app.route('/user/resetpassword')
 app.route('/user/isLoggedin')
     .get(auth.isLogged);
 
+app.route('/user/decline')
+    .post(auth.declineUser);
+
+
 };
 
 
