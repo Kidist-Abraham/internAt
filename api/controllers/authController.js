@@ -22,6 +22,12 @@ var passport= require('passport'),
 exports.declineUser = function(req, res) {
  sendEmail(req.body.email,"Your InternAt Account is not Approved",req.body.text);
  res.json({status:true})
+TobeApproved.remove({username: req.body.email}, function(err, tobeApproved) {
+	    if (err)
+	       console.log(err)
+	  console.log('TobeApproved successfully deleted') 
+	  });  
+
 
 }
 
@@ -114,7 +120,7 @@ exports.createUser = function createUser(req, res) {
 	  });
 
       }
- sendEmail(user.username,"Your InternAt Account is created successfully",'Dear '+user.name +", Welcome to InternAt, Your account has been approved. You can now start editing your profile by following the link below");
+ sendEmail(user.username,"Your InternAt Account is created successfully",'Dear '+user.name +", Welcome to InternAt, Your account has been approved. You can now start editing your profile by following the link below" + "http://localhost:4200/login");
 	
          console.log("I am HEre");
 	TobeApproved.remove({username: user.username}, function(err, tobeApproved) {
@@ -180,13 +186,14 @@ exports.createUser = function createUser(req, res) {
  if(user.role=="Admin"){
    console.log("Here")
       Admin.findOne({email:req.body.username}, function(err, admin) {
+    console.log(admin)
     if (err){
        return  res.json({success:false,
                     err:err}); }
    res.status(200);
    res.json({
       success:true,
-      message: 'Auth Successful',
+      message: 'Auth Successful admin',
       token: token,
       user:admin
     });
