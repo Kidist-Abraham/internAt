@@ -18,6 +18,10 @@ app.route('/internships/apply')
 
     .post(internships.apply_internships)
 
+app.route('/internships/myinterest')
+
+    .post(internships.myinterest)
+
 
 
 

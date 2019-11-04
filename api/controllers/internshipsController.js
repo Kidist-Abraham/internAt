@@ -140,3 +140,20 @@ exports.apply_internships = function(req, res) {
           
       });
     };
+
+exports.myinterest = function(req, res) {
+    var myinter = req.body.interest
+
+Internships.find({}, function(err, internships) {
+    if (err) {
+   return  res.json({success:false,
+                    err:err}); }
+var newI= internships.filter(intern=>myinter.some(x=>intern.catagory==x))
+ return  res.json({success:true,
+                        internships:newI}); 
+
+  });
+   
+    };
+
+
