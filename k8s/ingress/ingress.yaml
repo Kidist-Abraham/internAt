@@ -1,0 +1,44 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: api-ingress
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: api-fe-ip
+    ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+  rules:
+  - host: "api.internat.etc5ey.gebeya.co"
+    http:
+      paths:
+      - path: /user/*
+        backend:
+          serviceName: api-fe-service
+          servicePort: 80
+      - path: /user
+        backend:
+          serviceName: api-fe-service
+          servicePort: 80
+      - path: /companies/*
+        backend:
+          serviceName: api-fe-service
+          servicePort: 80
+      - path: /companies
+        backend:
+          serviceName: api-fe-service
+          servicePort: 80
+      - path: /interns/*
+        backend:
+          serviceName: api-fe-service
+          servicePort: 80
+      - path: /interns
+        backend:
+          serviceName: api-fe-service
+          servicePort: 80
+      - path: /tobeApproved/*
+        backend:
+          serviceName: api-fe-service
+          servicePort: 80
+      - path: /tobeApproved
+        backend:
+          serviceName: api-fe-service
+          servicePort: 80
