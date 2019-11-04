@@ -7,10 +7,14 @@ metadata:
     ingress.kubernetes.io/ssl-redirect: "true"
 spec:
   rules:
-  - host: "api.etc5ey.gebeya.co"
+  - host: "api.internat.etc5ey.gebeya.co"
     http:
       paths:
       - path: /user/*
+        backend:
+          serviceName: api-fe-service
+          servicePort: 80
+      - path: /user
         backend:
           serviceName: api-fe-service
           servicePort: 80
@@ -18,11 +22,23 @@ spec:
         backend:
           serviceName: api-fe-service
           servicePort: 80
+      - path: /companies
+        backend:
+          serviceName: api-fe-service
+          servicePort: 80
       - path: /interns/*
         backend:
           serviceName: api-fe-service
           servicePort: 80
+      - path: /interns
+        backend:
+          serviceName: api-fe-service
+          servicePort: 80
       - path: /tobeApproved/*
+        backend:
+          serviceName: api-fe-service
+          servicePort: 80
+      - path: /tobeApproved
         backend:
           serviceName: api-fe-service
           servicePort: 80

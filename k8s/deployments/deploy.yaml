@@ -5,14 +5,14 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: fe-service
+      app: api
       role: be
   replicas: 2
   template:
     metadata:
       name: api-deployment
       labels:
-        app: fe-service
+        app: api
         role: be
     spec:
       containers:
