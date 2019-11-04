@@ -21,6 +21,7 @@ var passport= require('passport'),
 
 exports.declineUser = function(req, res) {
  sendEmail(req.body.email,"Your InternAt Account is not Approved",req.body.text);
+ res.json({status:true})
 
 }
 
@@ -113,9 +114,9 @@ exports.createUser = function createUser(req, res) {
 	  });
 
       }
- sendEmail(user.username,"Your InternAt Account is created successfully",'Dear '+user.name +", Welcome to InternAt, Your account has been approved. You can know start editing your profile by following the link below");
+ sendEmail(user.username,"Your InternAt Account is created successfully",'Dear '+user.name +", Welcome to InternAt, Your account has been approved. You can now start editing your profile by following the link below");
 	
-
+         console.log("I am HEre");
 	TobeApproved.remove({username: user.username}, function(err, tobeApproved) {
 	    if (err)
 	       console.log(err)
@@ -145,16 +146,56 @@ exports.createUser = function createUser(req, res) {
     if (err){
        return  res.json({success:false,
                     err:err}); }
+
+    if(user.role=="Company"){
+      Company.findOne({email:req.body.username}, function(err, company) {
+    if (err){
+       return  res.json({success:false,
+                    err:err}); }
    res.status(200);
-    res.json({
+   res.json({
       success:true,
       message: 'Auth Successful',
       token: token,
-      user:user
+      user:company
     });
   });
-    
-	  };
+}
+
+  if(user.role=="Intern"){
+      Intern.findOne({email:req.body.username}, function(err, intern) {
+    if (err){
+       return  res.json({success:false,
+                    err:err}); }
+   res.status(200);
+     res.json({
+      success:true,
+      message: 'Auth Successful',
+      token: token,
+      user:intern
+    });
+  });
+}
+
+ if(user.role=="Admin"){
+   console.log("Here")
+      Admin.findOne({email:req.body.username}, function(err, admin) {
+    if (err){
+       return  res.json({success:false,
+                    err:err}); }
+   res.status(200);
+   res.json({
+      success:true,
+      message: 'Auth Successful',
+      token: token,
+      admin:admin
+    });
+  });
+}
+  
+  });
+  
+	  }
 
 
  exports.logout = function(req, res) {
