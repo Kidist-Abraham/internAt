@@ -25,6 +25,7 @@ exports.declineUser = function(req, res) {
 TobeApproved.remove({username: req.body.email}, function(err, tobeApproved) {
 	    if (err)
 	       console.log(err)
+           console.log(tobeApproved)
 	  console.log('TobeApproved successfully deleted') 
 	  });  
 
