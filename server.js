@@ -68,6 +68,9 @@ require('./api/routes/approvalRoutes')(app);
 require('./api/routes/adminRoutes')(app);
 require('./api/routes/internshipsRoutes')(app);
 
+app.post("*", function(req,res) {
+res.json({messgae:"wrong url"})
+})
 app.listen(port);
 
 console.log('InternAt RESTful API server started on: ' + port);

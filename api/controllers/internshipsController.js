@@ -27,20 +27,21 @@ exports.create_internships = function(req, res) {
     if (err){
        return  res.json({success:false,
                     err:err}); }
-                     console.log(company)
-     var  updatedInternships = company.myInternships.push(internships)
-      Company.findOneAndUpdate({email:internships.email}, updatedInternships, {new: true}, function(err, internships) {
+                   //  console.log(company)
+      company.myInternships.push(internships)
+     // console.log(company.myInternships.push(internships).length) 
+      Company.findOneAndUpdate({email:internships.email}, company, {new: true}, function(err, company) {
         if (err){
           return  res.json({success:false,
                         err:err}); }
          return  res.json({success:true,
-                        internships:internships});
+                        internships:internships,
+                        company:company});
        
   });
 });
       
-   return  res.json({success:true,
-            internships:internships});
+ 
   });
 };
 
@@ -67,17 +68,24 @@ exports.update_internships = function(req, res) {
     if (err){
        return  res.json({success:false,
                     err:err}); }
-       company.myInternships = company.myInternships.push(internships)
-       company.save()
+       company.myInternships.push(internships)
+       //(company.myInternships.filter(a=>a.email==internships.email))[0]
+        Company.findOneAndUpdate({email:internships.email}, company, {new: true}, function(err, company) {
+        if (err){
+          return  res.json({success:false,
+                        err:err}); }
+         return  res.json({success:true,
+                        internships:internships});
+       
+   });
   });
-   return  res.json({success:true,
-            internships:internships});
+  
   });
 };
 
 
 exports.delete_internships = function(req, res) {
-
+  console.log("delete")
 
   Internships.remove({
     _id: req.params.internshipsId
@@ -86,10 +94,33 @@ exports.delete_internships = function(req, res) {
        console.log(err)
        return  res.json({success:false,
                     err:err}); }
-    res.json({success:true,
+ Company.findOne({email:req.body.email}, function(err, company) {
+        if (err){
+           return  res.json({success:false,
+                        err:err}); }
+
+    var index = company.myInternships.indexOf(internships);
+ 
+    if (index > -1) {
+       company.myInternships.splice(index, 1);
+    }
+                  
+  Company.findOneAndUpdate({_id: company._id}, company, {new: true}, function(err, company) {
+
+    if (err){
+      return  res.json({success:false,
+                    err:err}); }   
+
+   return  res.json({success:true,
               message: 'Internships successfully deleted' });
+            
+          })
+          
+      });
+   
   });
 };
+
 
 exports.apply_internships = function(req, res) {
     console.log(req.params.internshipsId)
@@ -97,14 +128,14 @@ exports.apply_internships = function(req, res) {
         if (err){
            return  res.json({success:false,
                         err:err}); }
-                     company.appliedInterns=company.appliedInterns.push(req.body.intern)
+                     company.appliedInterns.push(req.body.intern)
   Company.findOneAndUpdate({_id: company._id}, company, {new: true}, function(err, company) {
 
     if (err){
       return  res.json({success:false,
                     err:err}); }   
           return  res.json({success:true,
-                        err:err});   
+                        company:company});   
           })
           
       });
