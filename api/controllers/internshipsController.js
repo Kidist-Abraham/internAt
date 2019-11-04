@@ -91,3 +91,21 @@ exports.delete_internships = function(req, res) {
   });
 };
 
+exports.apply_internships = function(req, res) {
+    console.log(req.params.internshipsId)
+    Company.findOne({email:req.body.email}, function(err, company) {
+        if (err){
+           return  res.json({success:false,
+                        err:err}); }
+                     company.appliedInterns=company.appliedInterns.push(req.body.intern)
+  Company.findOneAndUpdate({_id: company._id}, company, {new: true}, function(err, company) {
+
+    if (err){
+      return  res.json({success:false,
+                    err:err}); }   
+          return  res.json({success:true,
+                        err:err});   
+          })
+          
+      });
+    };
