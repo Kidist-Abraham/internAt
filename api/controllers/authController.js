@@ -21,12 +21,13 @@ var passport= require('passport'),
 
 exports.declineUser = function(req, res) {
  sendEmail(req.body.email,"Your InternAt Account is not Approved",req.body.text);
- res.json({status:true})
+
 TobeApproved.remove({username: req.body.email}, function(err, tobeApproved) {
 	    if (err)
 	       console.log(err)
-           console.log(tobeApproved)
-	  console.log('TobeApproved successfully deleted') 
+          else{ console.log(tobeApproved)
+	  console.log('TobeApproved successfully deleted')
+           res.json({status:true}) }
 	  });  
 
 
