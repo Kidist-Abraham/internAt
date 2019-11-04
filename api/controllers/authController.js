@@ -188,7 +188,7 @@ exports.createUser = function createUser(req, res) {
       success:true,
       message: 'Auth Successful',
       token: token,
-      admin:admin
+      user:admin
     });
   });
 }
