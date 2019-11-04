@@ -23,6 +23,7 @@ exports.declineUser = function(req, res) {
  sendEmail(req.body.email,"Your InternAt Account is not Approved",req.body.text);
 
 TobeApproved.remove({username: req.body.email}, function(err, tobeApproved) {
+            console.log(req.body.email)
 	    if (err)
 	       console.log(err)
           else{ console.log(tobeApproved)
