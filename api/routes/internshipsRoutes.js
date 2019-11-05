@@ -22,7 +22,6 @@ app.route('/internships/myinterest')
 
     .post(internships.myinterest)
 
-
-
-
 }
+
+
