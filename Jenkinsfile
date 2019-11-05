@@ -61,12 +61,12 @@ spec:
         container('gcloud') {
           sh "PYTHONUNBUFFERED=1 gcloud builds submit -t ${IMAGE_TAG} ."
         }
-      }
 
-      if (currentBuild.currentResult == 'FAILURE') {
-        slackSend channel: "#internat",
-          color: COLOR_MAP[currentBuild.currentResult],
-          message: "*${currentBuild.currentResult}* \nJob: ${env.JOB_NAME} [Build ${env.BUILD_NUMBER}]\nBuilding docker image has failed.\n${env.BUILD_URL}"
+        if (currentBuild.currentResult == "FAILURE") {
+          slackSend channel: "#internat",
+            color: COLOR_MAP[currentBuild.currentResult],
+            message: "*${currentBuild.currentResult}* \nJob: ${env.JOB_NAME} [Build ${env.BUILD_NUMBER}]\nBuilding docker image has failed.\n${env.BUILD_URL}"
+        }
       }
     }
     
