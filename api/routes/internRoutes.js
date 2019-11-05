@@ -1,6 +1,7 @@
 'use strict';
 module.exports = function(app) {
   var intern = require('../controllers/internsController');
+  var auth = require('../controllers/authController');
 
   // intern Routes
 /**
@@ -191,4 +192,8 @@ module.exports = function(app) {
     .get(intern.get_intern)
     .put(intern.update_intern)
     .delete(intern.delete_intern);
+
+app.route('/interns/approve')
+
+    .post(auth.approve_intern)
 };

@@ -2,35 +2,22 @@
 module.exports = function(app) {
   var admin = require('../controllers/adminController');
 
-  // admin Routes
-  /**
- * @api {get} /admin/:adminId  Get all admin
- * @api {put} /admin/:adminId Update admin
- * @apiName UpdateAdmin
- * @apiGroup Admin
- * @apiVersion 0.0.1
- *
- * @apiSuccess {Boolean} success  The success status of the request
- * @apiSuccess {Array} admin The list of all the admin
- *
-
- * @apiSuccessExample {json} Success-Response:
-*/
+ 
 
 /*
 * @api {get} /admin/:adminId  Get Admin
-* @apiName Getadmin
+* @apiName GetAdmin
 * @apiGroup Admin
 * @apiVersion 0.0.1
 
-
+  @apiDescription This will get the admin profile
 * @apiParam {String} adminId  The ID of the Admin.
 
   @apiSuccess {Boolean} success  The success status of the request
 * @apiSuccess {Object} admin The admin of the stated ID.
 *
 * @apiSuccessExample {json} Success-Response:
-* 	 HTTP/1.1 201 Created
+* 	
 * {
     "success": true,
     "admin": {
@@ -41,15 +28,13 @@ module.exports = function(app) {
         "__v": 0
     }
 }
-**/
 
-/**
 * @api {put} /admin/:adminId  Update Admin
-* @apiName Updateadmin
+* @apiName UpdateAdmin
 * @apiGroup Admin
 * @apiVersion 0.0.1
 
-
+  @apiDescription This is to update the admin profile
 * @apiParam {String} adminId The ID of the admin to be updated.
 * @apiParam {String}  first_name The name of the Admin.
 * @apiParam {String} last_name The name of the Admin.
@@ -68,7 +53,18 @@ module.exports = function(app) {
        }
 
 @apiSuccess {Boolean} success  The success status of the request
-* @apiSuccess {Object} admin The admin just updated.
+ @apiSuccess {Object} admin The admin just updated.
+@apiSuccessExample {json} Success-Response:
+ {
+    "success": true,
+    "admin": {
+        "role": "Admin",
+        "_id": "5dc04e9a8a006703363502e3",
+        "first_name": "Hena",
+        "email": "intern.at.tech@gmail.com",
+        "__v": 0
+    }
+}
 
 *
 

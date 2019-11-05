@@ -69,3 +69,7 @@ exports.delete_intern = function(req, res) {
   });
 };
 
+
+
+
+

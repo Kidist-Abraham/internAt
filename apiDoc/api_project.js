@@ -1,4 +1,4 @@
-{
+define({
   "title": "InterAt Api Documentation",
   "name": "internAt",
   "version": "1.0.0",
@@ -8,8 +8,8 @@
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2019-10-30T03:50:16.139Z",
+    "time": "2019-11-05T21:23:02.807Z",
     "url": "http://apidocjs.com",
     "version": "0.17.7"
   }
-}
+});

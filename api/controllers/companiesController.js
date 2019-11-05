@@ -73,7 +73,7 @@ exports.approve_intern = function(req, res) {
 }
 
 exports.apply_internships = function(req, res) {
-    console.log(req.params.internshipsId)
+    console.log(req.body)
     Company.findOne({email:req.body.email}, function(err, company) {
         if (err){
            return  res.json({success:false,
