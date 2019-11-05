@@ -86,7 +86,7 @@ module.exports = function(app) {
             "__v": 0
     }
 }
-**/d
+**/
   app.route('/interns')
     .get(intern.list_all_interns)
     .post(intern.create_intern);
