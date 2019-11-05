@@ -14,9 +14,7 @@ app.route('/internships/:internshipsId')
     .put(internships.update_internships)
     .delete(internships.delete_internships)
 
-app.route('/internships/apply')
 
-    .post(internships.apply_internships)
 
 app.route('/internships/myinterest')
 

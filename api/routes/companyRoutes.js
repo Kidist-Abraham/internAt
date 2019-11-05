@@ -205,4 +205,10 @@ module.exports = function(app) {
     .get(company.get_company)
     .put(company.update_company)
     .delete(company.delete_company);
+
+
+// email,internId,
+app.route('/companies/apply')
+
+    .post(company.apply_internships)
 };
