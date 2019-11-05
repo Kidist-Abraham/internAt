@@ -68,7 +68,7 @@ exports.update_internships = function(req, res) {
     if (err){
        return  res.json({success:false,
                     err:err}); }
-       company.myInternships.map(int =>{if(int._id==internships._id) {internships} else int })
+     company=  company.myInternships.map(int =>{if(int._id==internships._id) {internships} else int })
        //(company.myInternships.filter(a=>a.email==internships.email))[0]
         Company.findOneAndUpdate({email:internships.email}, company, {new: true}, function(err, company) {
         if (err){
