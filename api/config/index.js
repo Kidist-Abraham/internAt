@@ -6,5 +6,3 @@ module.exports = {
   // JWT Key
   JWT_KEY: "HelloInternAtSecret"
 };
-
-console.log(process.env.MONGOLAB_URI)
