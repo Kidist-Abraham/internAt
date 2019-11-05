@@ -45,25 +45,28 @@ spec:
 }
   }
   stages {
-    // stage('Test') {
-    //   steps {
-    //     container('node') {
-    //       sh """
-    //         npm install
-    //         npm test
-    //       """
-    //     }
-    //   }
-    //   post {
-    //     failure {
-    //       slackSend channel: "#internat",
-    //         color: COLOR_MAP[currentBuild.currentResult],
-    //         message: "*TESTS*: Some tests have failed. \nJob: ${env.JOB_NAME} [Build ${env.BUILD_NUMBER}]"
 
-    //     }
-    //   }
-    // }
+    // Test stage
+    stage('Test') {
+      steps {
+        container('node') {
+          sh """
+            npm install
+            npm test
+          """
+        }
+      }
+      post {
+        failure {
+          slackSend channel: "#internat",
+            color: COLOR_MAP[currentBuild.currentResult],
+            message: "*TESTS*: Some tests have failed. \nJob: ${env.JOB_NAME} [Build ${env.BUILD_NUMBER}]"
+
+        }
+      }
+    }
     
+    // Build stage
     stage('Build and push image with Container Builder') {
       steps {
         container('gcloud') {
@@ -81,6 +84,7 @@ spec:
       }
     }
     
+    // Deploy stage
     stage('Deploy Backend API') {
       // Developer Branches
       when { branch 'development' }
