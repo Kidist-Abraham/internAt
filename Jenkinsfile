@@ -45,24 +45,24 @@ spec:
 }
   }
   stages {
-    stage('Test') {
-      steps {
-        container('node') {
-          sh """
-            npm install
-            npm test
-          """
-        }
-      }
-      post {
-        failure {
-          slackSend channel: "#internat",
-            color: COLOR_MAP[currentBuild.currentResult],
-            message: "*${currentBuild.currentResult}*: Some tests have failed. \nJob: ${env.JOB_NAME} [Build ${env.BUILD_NUMBER}]"
+    // stage('Test') {
+    //   steps {
+    //     container('node') {
+    //       sh """
+    //         npm install
+    //         npm test
+    //       """
+    //     }
+    //   }
+    //   post {
+    //     failure {
+    //       slackSend channel: "#internat",
+    //         color: COLOR_MAP[currentBuild.currentResult],
+    //         message: "*TESTS*: Some tests have failed. \nJob: ${env.JOB_NAME} [Build ${env.BUILD_NUMBER}]"
 
-        }
-      }
-    }
+    //     }
+    //   }
+    // }
     
     stage('Build and push image with Container Builder') {
       steps {
@@ -75,7 +75,7 @@ spec:
         failure {
           slackSend channel: "#internat",
             color: COLOR_MAP[currentBuild.currentResult],
-            message: "*${currentBuild.currentResult}*: Building Docker image failed. \nJob: ${env.JOB_NAME} [Build ${env.BUILD_NUMBER}]"
+            message: "*BUILD*: Building docker image failed. \nJob: ${env.JOB_NAME} [Build ${env.BUILD_NUMBER}]"
 
         }
       }
@@ -97,7 +97,7 @@ spec:
         failure {
           slackSend channel: "#internat",
             color: COLOR_MAP[currentBuild.currentResult],
-            message: "*${currentBuild.currentResult}*: Deployment to the server failed. \nJob: ${env.JOB_NAME} [Build ${env.BUILD_NUMBER}]"
+            message: "*DEPLOY*: Deployment to the server failed. \nJob: ${env.JOB_NAME} [Build ${env.BUILD_NUMBER}]"
 
         }
       }
