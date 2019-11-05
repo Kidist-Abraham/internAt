@@ -93,5 +93,3 @@ spec:
     }
 }
 }
-
-def slackFeedback()
