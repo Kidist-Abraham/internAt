@@ -44,7 +44,7 @@ spec:
 """
 }
   }
-  stages {
+  nodes {
     // stage('Test') {
     //   steps {
     //     container('node') {
