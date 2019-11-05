@@ -17,7 +17,8 @@ var InternshipsSchema = new Schema({
   typeofIntern: {type: String},
   location: {type: [String]},
   city:String,
-  catagory:{type: String, required: true},
+  type:String,
+  catagory:{type: String, required: true}
 
 });
 
