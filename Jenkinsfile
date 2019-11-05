@@ -44,49 +44,71 @@ spec:
 """
 }
   }
-  nodes {
-    // stage('Test') {
-    //   steps {
-    //     container('node') {
-    //       sh """
-    //         npm install
-    //         npm test
-    //       """
-    //     }
-    //   }
-    // }
-    try {
-      stage('Build and push image with Container Builder') {
-            steps {
-              container('gcloud') {
-                sh "PYTHONUNBUFFERED=1 gcloud builds submit -t ${IMAGE_TAG} ."
-              }
-            }
-          }
-          
-      stage('Deploy Backend API') {
-        // Developer Branches
-        when { branch 'development' }
-        steps {
-          container('kubectl') {
-            sh("kubectl get ns backend")
-            sh("sed -i.bak 's#gcr.io/gcr-project/sample:1.0.0#${IMAGE_TAG}#' ./k8s/deployments/*.yaml")
-            step([$class: 'KubernetesEngineBuilder',namespace: "backend", projectId: env.PROJECT, clusterName: env.CLUSTER, zone: env.CLUSTER_ZONE, manifestPattern: 'k8s/services', credentialsId: env.JENKINS_CRED, verifyDeployments: false])
-            step([$class: 'KubernetesEngineBuilder',namespace: "backend", projectId: env.PROJECT, clusterName: env.CLUSTER, zone: env.CLUSTER_ZONE, manifestPattern: 'k8s/deployments', credentialsId: env.JENKINS_CRED, verifyDeployments: true])
-          }
+  stages {
+    stage('Test') {
+      steps {
+        container('node') {
+          sh """
+            npm install
+            npm test
+          """
+        }
+      }
+      post {
+        failure {
+          slackSend channel: "#internat",
+            color: COLOR_MAP[currentBuild.currentResult],
+            message: "*${currentBuild.currentResult}*: Some tests have failed. \nJob: ${env.JOB_NAME} [Build ${env.BUILD_NUMBER}]"
+
+        }
+      }
+    }
+    
+    stage('Build and push image with Container Builder') {
+      steps {
+        container('gcloud') {
+          sh "PYTHONUNBUFFERED=1 gcloud builds submit -t ${IMAGE_TAG} ."
         }
       }
 
-      stage('Slack Feedback') {
-        steps {
+      post {
+        failure {
           slackSend channel: "#internat",
             color: COLOR_MAP[currentBuild.currentResult],
-            message: "*${currentBuild.currentResult}* \nJob: ${env.JOB_NAME} [Build ${env.BUILD_NUMBER}] \n${env.BUILD_URL}"
+            message: "*${currentBuild.currentResult}*: Building Docker image failed. \nJob: ${env.JOB_NAME} [Build ${env.BUILD_NUMBER}]"
+
         }
       }
-    } catch (e) {
-      throw(e)
     }
     
+    stage('Deploy Backend API') {
+      // Developer Branches
+      when { branch 'development' }
+      steps {
+        container('kubectl') {
+          sh("kubectl get ns backend")
+          sh("sed -i.bak 's#gcr.io/gcr-project/sample:1.0.0#${IMAGE_TAG}#' ./k8s/deployments/*.yaml")
+          step([$class: 'KubernetesEngineBuilder',namespace: "backend", projectId: env.PROJECT, clusterName: env.CLUSTER, zone: env.CLUSTER_ZONE, manifestPattern: 'k8s/services', credentialsId: env.JENKINS_CRED, verifyDeployments: false])
+          step([$class: 'KubernetesEngineBuilder',namespace: "backend", projectId: env.PROJECT, clusterName: env.CLUSTER, zone: env.CLUSTER_ZONE, manifestPattern: 'k8s/deployments', credentialsId: env.JENKINS_CRED, verifyDeployments: true])
+        }
+      }
+
+      post {
+        failure {
+          slackSend channel: "#internat",
+            color: COLOR_MAP[currentBuild.currentResult],
+            message: "*${currentBuild.currentResult}*: Deployment to the server failed. \nJob: ${env.JOB_NAME} [Build ${env.BUILD_NUMBER}]"
+
+        }
+      }
+    }
+  }
+
+  post {
+    always {
+        slackSend channel: "#internat",
+          color: COLOR_MAP[currentBuild.currentResult],
+          message: "*${currentBuild.currentResult}* \nJob: ${env.JOB_NAME} [Build ${env.BUILD_NUMBER}] \n${env.BUILD_URL}"
+    }
   }
 }
