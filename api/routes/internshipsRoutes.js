@@ -11,7 +11,7 @@ module.exports = function(app) {
 app.route('/internships/:internshipsId')
 
     .get(internships.get_internships)
-    .put(internships.update_internships)
+  //  .put(internships.update_internships)
     .delete(internships.delete_internships)
 
 

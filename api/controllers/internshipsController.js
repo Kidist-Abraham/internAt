@@ -58,7 +58,7 @@ Internships.findById(req.params.internshipsId, function(err, internships) {
 };
 
 
-exports.update_internships = function(req, res) {
+/*exports.update_internships = function(req, res) {
     Internships.findOneAndUpdate({_id: req.params.internshipsId}, req.body, {new: true}, function(err, internships) {
     if (err){
       return  res.json({success:false,
@@ -68,7 +68,10 @@ exports.update_internships = function(req, res) {
     if (err){
        return  res.json({success:false,
                     err:err}); }
-     company=  company.myInternships.map(int =>{if(int._id==internships._id) {internships} else int })
+console.log(internships)
+console.log(company.myInternships)
+     company.myInternships=  company.myInternships.map(int =>({if(int==null) {null} else if(int._id.toString()==internships._id.toString()) {internships}  else int }))
+     
        //(company.myInternships.filter(a=>a.email==internships.email))[0]
         Company.findOneAndUpdate({email:internships.email}, company, {new: true}, function(err, company) {
         if (err){
@@ -83,6 +86,7 @@ exports.update_internships = function(req, res) {
   });
 };
 
+*/
  
    
 
