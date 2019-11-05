@@ -115,7 +115,7 @@ module.exports = function(app) {
  *  {
     "success": true,
     "company": {
-        "_id": "5db44378dabe471c620daeb7",
+    "_id": "5db44378dabe471c620daeb7",
     "name": "Qene",
     "email": "qene@gm",
     "city": "AA",
