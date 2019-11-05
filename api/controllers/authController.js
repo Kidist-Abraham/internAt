@@ -196,7 +196,7 @@ exports.createUser = function createUser(req, res) {
    res.status(200);
    res.json({
       success:true,
-      message: 'Auth Successful admin',
+      message: 'Auth Successful',
       token: token,
       user:admin
     });
@@ -340,7 +340,18 @@ exports.isLogged =  function (req,res){
  return res.json({success:false})
 }
 
+exports.approve_intern = function(req, res) {
 
+
+  Intern.findOne({email: req.body.email}, function(err, intern) {
+    if (err){
+       return  res.send({success:false,
+                    err:err}); }
+  sendEmail(req.body.email,"Your InternAt Account is not Approved",req.body.text);
+    res.json({ success:true,
+               message: 'Intern is approved. Email will be sent.' });
+  });
+};
 
 sendEmail = function (to,subject,text){
 
