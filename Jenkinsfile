@@ -68,7 +68,6 @@ spec:
           color: COLOR_MAP[currentBuild.currentResult],
           message: "*${currentBuild.currentResult}* \nJob: ${env.JOB_NAME} [Build ${env.BUILD_NUMBER}]\nBuilding docker image has failed.\n${env.BUILD_URL}"
       }
-      }
     }
     
     stage('Deploy Backend API') {
