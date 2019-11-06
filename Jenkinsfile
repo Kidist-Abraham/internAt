@@ -45,25 +45,46 @@ spec:
 }
   }
   stages {
-    // stage('Test') {
-    //   steps {
-    //     container('node') {
-    //       sh """
-    //         npm install
-    //         npm test
-    //       """
-    //     }
-    //   }
-    // }
+
+    // Test stage
+    stage('Test') {
+      steps {
+        container('node') {
+          sh """
+            npm install
+            npm test
+          """
+        }
+      }
+      post {
+        failure {
+          slackSend channel: "#internat",
+            color: COLOR_MAP[currentBuild.currentResult],
+            message: "*TESTS*: Some tests have failed. \nJob: ${env.JOB_NAME} [Build ${env.BUILD_NUMBER}]"
+
+        }
+      }
+    }
     
+    // Build stage
     stage('Build and push image with Container Builder') {
       steps {
         container('gcloud') {
           sh "PYTHONUNBUFFERED=1 gcloud builds submit -t ${IMAGE_TAG} ."
         }
       }
+
+      post {
+        failure {
+          slackSend channel: "#internat",
+            color: COLOR_MAP[currentBuild.currentResult],
+            message: "*BUILD*: Building docker image failed. \nJob: ${env.JOB_NAME} [Build ${env.BUILD_NUMBER}]"
+
+        }
+      }
     }
     
+    // Deploy stage
     stage('Deploy Backend API') {
       // Developer Branches
       when { branch 'development' }
@@ -75,14 +96,23 @@ spec:
           step([$class: 'KubernetesEngineBuilder',namespace: "backend", projectId: env.PROJECT, clusterName: env.CLUSTER, zone: env.CLUSTER_ZONE, manifestPattern: 'k8s/deployments', credentialsId: env.JENKINS_CRED, verifyDeployments: true])
         }
       }
-    }
 
-    stage('Slack Feedback') {
-      steps {
+      post {
+        failure {
+          slackSend channel: "#internat",
+            color: COLOR_MAP[currentBuild.currentResult],
+            message: "*DEPLOY*: Deployment to the server failed. \nJob: ${env.JOB_NAME} [Build ${env.BUILD_NUMBER}]"
+
+        }
+      }
+    }
+  }
+
+  post {
+    always {
         slackSend channel: "#internat",
           color: COLOR_MAP[currentBuild.currentResult],
           message: "*${currentBuild.currentResult}* \nJob: ${env.JOB_NAME} [Build ${env.BUILD_NUMBER}] \n${env.BUILD_URL}"
-      }
     }
-}
+  }
 }
