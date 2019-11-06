@@ -180,7 +180,8 @@ exports.createUser = function createUser(req, res) {
      res.json({
       success:true,
       message: 'Auth Successful',
-      role:user.role,
+       role:user.role,
+     _id:user._id,
       token: token,
       user:intern
     });
@@ -199,6 +200,8 @@ exports.createUser = function createUser(req, res) {
    res.json({
       success:true,
       message: 'Auth Successful',
+     role:user.role,
+     _id:user._id,
       token: token,
       user:admin
     });

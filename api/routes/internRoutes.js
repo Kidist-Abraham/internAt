@@ -193,6 +193,24 @@ module.exports = function(app) {
     .put(intern.update_intern)
     .delete(intern.delete_intern);
 
+/**
+ * @api {post} /interns/approve  Approve Intern
+ * @apiName ApproveIntern
+ * @apiGroup Intern
+ * @apiVersion 0.0.1
+
+
+ * @apiParam {String} email The email of the intern
+
+ * 
+   @apiSuccess {Boolean} success  The success status of the request
+
+ * @apiSuccessExample {json} Success-Response (The updated intern):
+
+ * {"success": true,
+    "message": "Intern successfully deleted"
+  }*/
+
 app.route('/interns/approve')
 
     .post(auth.approve_intern)
