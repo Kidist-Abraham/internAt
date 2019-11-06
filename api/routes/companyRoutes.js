@@ -12,32 +12,46 @@ module.exports = function(app) {
  *
 
  * @apiSuccessExample {json} Success-Response:
- *{
+ {
     "success": true,
     "companies": [
         {
+            "catagory": [
+                "Test Catagory"
+            ],
             "role": "Company",
-            "_id": "5db442eedabe471c620daeb6",
-            "name": "kine",
-            "email": "@ki",
-            "city": "AA",
-            "catagory": "ab",
-            "field": "abc",
-            "LC": "1234"
+            "myInternships": [
+                {
+                    "location": [],
+                    "_id": "5dc1675634688931a443f889",
+                    "email": "Test@email",
+                    "catagory": "Food",
+                    "name": "ByyourInter",
+                    "__v": 0
+                }
+            ],
+            "appliedInterns": [],
+            "_id": "5dbf0d82679d823426362cd6",
+            "name": "Test Name",
+            "email": "Test@email",
+            "city": "Test City",
+            "field": "Test field",
+            "LC": "LC",
             "__v": 0
         },
         {
+            "catagory": [],
             "role": "Company",
-            "_id": "5db44378dabe471c620daeb7",
-            "name": "Qene",
-            "email": "qene@gm",
-            "city": "AA",
-            "catagory": "Tech",
-            "field": "Game ",
-            "LC": "1234"
+            "myInternships": [],
+            "appliedInterns": [],
+            "_id": "5dbf20f6607e920024dd1bbd",
+            "name": "Kidist",
+            "email": "kidistabraham@gmail.com",
+            "LC": "123",
             "__v": 0
-        }, ]
-}
+        }
+     ]
+ }
  *
  */
 
@@ -56,6 +70,8 @@ module.exports = function(app) {
    @apiParam {String} description a brief description of the company
    @apiParam {String} LC The license of the company
    @apiParam {String} role the role (which should be 'Company')
+   @apiParam {Array} myInternships the list of internships the company announced so far
+   @apiParam {Array} appliedInterns the list of interns who applied to the internship the company posted
 
  *
  * @apiParamExample {json} Request-Example:
@@ -64,11 +80,13 @@ module.exports = function(app) {
     "email": "qene@gm",
     "city": "AA",
     "catagory": "Tech",
-    "field": "Gaming  ",
-    "description": "A Gaming Company ....."
+    "description": "A Gaming Company .....",
     "role": "Company",
-    "LC": "1234"
- }
+    "LC":"1234"
+    
+   
+{
+                
 
    @apiSuccess {Boolean} success  The success status of the request
  * @apiSuccess {Object} company The company just created.
@@ -84,10 +102,11 @@ module.exports = function(app) {
     "email": "qene@gm",
     "city": "AA",
     "catagory": "Tech",
-    "field": "Gaming  ",
     "description": "A Gaming Company .....",
     "role": "Company",
     "LC": "1234",
+    "myInternships": [],
+    "appliedInterns": [],
     "__v": 0
     }
 }
@@ -115,15 +134,16 @@ module.exports = function(app) {
  *  {
     "success": true,
     "company": {
-    "_id": "5db44378dabe471c620daeb7",
+     "_id": "5db44378dabe471c620daeb7",
     "name": "Qene",
     "email": "qene@gm",
     "city": "AA",
     "catagory": "Tech",
-    "field": "Gaming  ",
     "description": "A Gaming Company .....",
     "role": "Company",
     "LC": "1234",
+    "myInternships": [],
+    "appliedInterns": [],
     "__v": 0
     }
 }
@@ -136,8 +156,7 @@ module.exports = function(app) {
  * @apiVersion 0.0.1
 
 
- * @apiParam {String} companyId The ID of the Company to be updated.
- * @apiParam {String} name The name of the Company.
+   @apiParam {String} name The name of the Company.
  * @apiParam {String} email The email of the Company.
  * @apiParam {String} city The city of the Company. 
  * @apiParam {String} catagory The catagory of the company's PLC
@@ -145,20 +164,24 @@ module.exports = function(app) {
    @apiParam {String} description a brief description of the company
    @apiParam {String} LC The license of the company
    @apiParam {String} role the role (which should be 'Company')
+   @apiParam {Array} myInternships the list of internships the company announced so far
+   @apiParam {Array} appliedInterns the list of interns who applied to the internship the company posted
 
- * @apiParamExample {json} Request-Example:
+ *  @apiParamExample {json} Request-Example:
  * 	{
-    "name": "Updated Qene",
+    "name": "Qene",
     "email": "qene@gm",
-    "city": "AA and Silicon Valley",
+    "city": "AA",
     "catagory": "Tech",
-    "field": "Gaming  ",
     "description": "A Gaming Company .....",
     "role": "Company",
-    "LC": "PL12",
- }
- 
-@apiSuccess {Boolean} success  The success status of the request
+    "LC":"1234"
+    
+   
+{
+                
+
+   @apiSuccess {Boolean} success  The success status of the request
  * @apiSuccess {Object} company The company just updated.
 
  *
@@ -166,19 +189,20 @@ module.exports = function(app) {
  * 	 HTTP/1.1 201 Created
  * {
     "success": true,
-    "company":{
-       "_id": "5db44378dabe471c620daeb7",
-       "name": "Updated Qene",
-       "email": "qene@gm",
-       "city": "AA",
-       "catagory": "Tech",
-       "field": "Gaming  ",
-       "description": "A Gaming Company .....",
-       "role": "Company",
-       "LC": "PL12",
-       "__v": 0 
-              }
- }
+    "company": {
+        "_id": "5db44378dabe471c620daeb7",
+    "name": "Qene",
+    "email": "qene@gm",
+    "city": "AA",
+    "catagory": "Tech",
+    "description": "A Gaming Company .....",
+    "role": "Company",
+    "LC": "1234",
+    "myInternships": [],
+    "appliedInterns": [],
+    "__v": 0
+    }
+}
 **/
 
 /**
@@ -207,8 +231,42 @@ module.exports = function(app) {
     .delete(company.delete_company);
 
 
-// email,internId,
-app.route('/companies/apply')
+/**
+ * @api {post} /companies/apply  Apply to Company
+ * @apiName ApplyCompany
+ * @apiGroup Company
+ * @apiVersion 0.0.1
 
-    .post(company.apply_internships)
+
+ * @apiParam {Object} intern the information of the intern 
+   @apiParam {String} email the email of the intern 
+ 
+
+ * 
+   @apiSuccess {Boolean} success  The success status of the request
+   @apiSuccess {Object} company The company to the user apply to. 
+
+ * @apiSuccessExample {json} Success-Response (The updated company):
+
+ * {"success": true,
+    "company": {
+        "_id": "5db44378dabe471c620daeb7",
+    "name": "Qene",
+    "email": "qene@gm",
+    "city": "AA",
+    "catagory": "Tech",
+    "description": "A Gaming Company .....",
+    "role": "Company",
+    "LC": "1234",
+    "myInternships": [{"name":"Biniam Weldu",
+                       "email":"bini@gnail.com",
+                       "field": "Electrical and Computer Engineering",
+                        "experiance": ""}],
+    "appliedInterns": [],
+    "__v": 0
+    }
+  }
+**/
+app.route('/companies/apply')
+  .post(company.apply_internships)
 };

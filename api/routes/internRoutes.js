@@ -15,33 +15,29 @@ module.exports = function(app) {
  *
 
  * @apiSuccessExample {json} Success-Response:
- *{
-    "success": true,
+ *"success": true,
     "interns": [
         {
+            "interests": [],
+            "skills": [],
             "role": "Intern",
-            "_id": "5db442eedabe471c620daeb6",
-            "name": "Melat",
-            "email": "M@mel",
-            "Interest": ["Health","Agriculture"]
-            "field": "Mining engineering",
-            "discription": "I am a 3rd year..."
+            "_id": "5dc085b4b5c4c52c7ac69253",
+            "first_name": "Kidist",
+            "email": "kidisstabraham@gmail.com",
             "__v": 0
         },
         {
-             "role": "Intern",
-            "_id": "7d542e54r4f32e471c620aei9",
-            "name": "Yocabed",
-            "email": "yo@mel",
-            "interests": ["Law","Economics"]
-            "field": "Law",
-            "discription": "I am GC class..."
+            "interests": [],
+            "skills": [],
+            "role": "Intern",
+            "_id": "5dc087c3d0b4a62b835bf982",
+            "first_name": "Kalkidan",
+            "email": "kalkidan@gmail.com",
             "__v": 0
-        }, ]
+        } ]
 }
  *
  */
-
 
 /**
  * @api {post} /interns  Create Intern
@@ -49,22 +45,26 @@ module.exports = function(app) {
  * @apiGroup Intern
  * @apiVersion 0.0.1
 
- * @apiParam {String} name The name of the Intern.
+ * @apiParam {String} first_name The first name of the Intern.
+   @apiParam {String} last_name The last name of the Intern.
+   @apiParam {String} department The departmnet of the Intern.
  * @apiParam {String} email The email of the Intern.
  * @apiParam {Array} interests Interests of the Interen 
- * @apiParam {String} field The field of study of the intern
+ * @apiParam {String} bio The bio of the intern
    @apiParam {String} description a brief description of the Intern
    @apiParam {String} role the role (which should be 'Intern')
+   @apiParam {String} level the education level of the intern
+   @apiParam {Array} skills the skills the intern has.
 
  *
  * @apiParamExample {json} Request-Example:
  * 	{
             "role": "Intern",
-            "name": "Yocabed",
+            "first_name": "Yocabed",
             "email": "yo@mel",
             "interests": ["Law","Economics"]
-            "field": "Law",
-            "discription": "I am GC class..."
+            "department": "Law",
+            "description": "I am GC class..."
            
         }
 
@@ -79,11 +79,11 @@ module.exports = function(app) {
     "intern": {
             "_id": "5db44378dabe471c620daeb7",
             "role": "Intern",
-            "name": "Yocabed",
+            "first_name": "Yocabed",
             "email": "yo@mel",
             "interests": ["Law","Economics"]
-            "field": "Law",
-            "discription": "I am GC class...",
+            "department": "Law",
+            "description": "I am GC class...",
             "__v": 0
     }
 }

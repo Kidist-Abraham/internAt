@@ -113,7 +113,7 @@ module.exports = function(app) {
      .post(auth.logout);
 
 /**
- * @api {post} /user/forgotPassword  Login User
+ * @api {post} /user/forgotPassword  Forgot Password
  * @apiName ForgotPassword
  * @apiGroup Auth
  * @apiVersion 0.0.1
@@ -175,12 +175,29 @@ module.exports = function(app) {
 
 
 /**
- * @api {post} /user/resetpassword/:id/:token  Authorize password recovery
+ * @api {get} /user/resetpassword/:id/:token  Render password recovery form
+ * @apiName RecoveryForm
+ * @apiGroup Auth
+ * @apiVersion 0.0.1
+
+ * @apiDescription This can only be accessed in the users email. The password recovery link is going to go to this route and render a form for the user to enter the new password.
+ *
+   
+  
+  @apiParam {String} id The id of the user. 
+  @apiParam {String} token The token generated to recover the password. 
+ * 
+ *
+ *
+ */
+
+/**
+ * @api {post} /user/resetpassword/ Authorize password recovery
  * @apiName AuthorizeResetPassword
  * @apiGroup Auth
  * @apiVersion 0.0.1
 
- * @apiDescription t=This is request can only be accessed in the users email. The password recovery link is going to go to this route and let the user enter a new password. 
+ * @apiDescription This will actually perform the password recovery. 
  *
    
   @apiParam {String} password The new password .
@@ -228,32 +245,46 @@ app.route('/user/resetpassword')
  * @apiGroup Auth
  * @apiVersion 0.0.1
 
- * @apiDescription This will return true if a user is logged in
+ * @apiDescription This will return true if a user is logged in and false otherwise
  *
-   
-  @apiParam {String} password The new password .
-  @apiParam {String} id The id of the user. this is hidden. The user do not need to enter this.
-  @apiParam {String} token The token generated to recover the password. this is hidden. The user do not need to enter this.
- * 
- *
- *  
    @apiSuccess {Boolean} success The success status of the request
-   @apiSuccess {String} message A success message "Your password has been changed successfuly"
   
  *
  * @apiSuccessExample {json} Success-Response:
  * 
-             {
-             "sucess": true,
-            
-             "message":"Your password has been changed successfuly"
-             }
- *
+            {success:true}
  */
 
 app.route('/user/isLoggedin')
     .get(auth.isLogged);
 
+/*
+ * @api {post} /user/decline  Decline user
+ * @apiName DeclineUser
+ * @apiGroup Auth
+ * @apiVersion 0.0.1
+
+ * @apiDescription This will dcline the user from being approved. An email will be sent to the user along with the reason of decline. 
+   
+  @apiParam {String} email The email of the user.
+  @apiParam {String} text The text describing why the user is nor approved
+  @apiParam {String} token The token generated to recover the password. this is hidden. The user do not need to enter this.
+ * 
+ *@apiParamExample {json} Request-Example:
+ * 	 {
+ * 		"email": "kidist.abraham@intern.io",
+                "text" : "Your license of your company is not valid. Please register again with a valid license"
+ * 		
+ * 	 }
+ *  
+   @apiSuccess {Boolean} success The success status of the request
+   
+ *
+ * @apiSuccessExample {json} Success-Response:
+ * 
+             res.json({status:true})
+ *
+ */
 app.route('/user/decline')
     .post(auth.declineUser);
 
