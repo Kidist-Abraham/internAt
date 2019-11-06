@@ -188,6 +188,7 @@ exports.createUser = function createUser(req, res) {
 
  if(user.role=="Admin"){
    console.log("Here")
+   console.log(req.body.username) 
       Admin.findOne({email:req.body.username}, function(err, admin) {
     console.log(admin)
     if (err){
