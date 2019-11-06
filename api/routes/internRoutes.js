@@ -205,11 +205,9 @@ module.exports = function(app) {
  * 
    @apiSuccess {Boolean} success  The success status of the request
 
- * @apiSuccessExample {json} Success-Response (The updated intern):
+ * */
 
- * {"success": true,
-    "message": "Intern successfully deleted"
-  }*/
+ 
 
 app.route('/interns/approve')
 
